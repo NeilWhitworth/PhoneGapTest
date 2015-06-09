@@ -1,0 +1,132 @@
+<!DOCTYPE html><html>
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>Authentication</title>
+        <style type="text/css">  
+    html, body {
+        height: 100%;    
+	}      
+    body {        
+        font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 17px;
+        font-weight:300;        
+        margin: 0;
+        padding: 0;
+        background-color: #5F8DE2;
+	}
+	
+	h1 {
+		font-weight:300;  
+		font-size: 1.6em; 
+		background-color: #fff;
+		margin: 0;
+		padding: 40px 15% 30px;
+		}
+	
+	ul {
+		list-style: none inside none;
+		margin: 0;
+		padding: 0 15%;
+		}
+	ul li {
+		position: relative;
+		white-space: no-wrap;
+	}
+	ul.loginDetails {
+		background-color: #fff;
+		border-bottom: 20px solid #fff;
+		}
+	ul.loginDetails li:first-child {
+		color: #5F8DE2;
+	}
+	ul.loginDetails li:last-child {padding-bottom: 20px;}
+	label {
+		display: block;
+		padding: 5px;
+		}
+	
+	input {
+		padding: 8px;
+		background-color: #ECEBED;
+		display: block;
+		height: 30px;
+		width: 100%;
+		border: none;
+		font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 17px;
+        font-weight:300; 
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}	
+	
+	input:focus {
+		background-color: white;
+		border: 1px solid #ECEBED;
+	}
+	
+	ul.loginBtn {
+		border-top: 30px solid #ECEBED;
+		background-color: #5F8DE2;
+		padding: 40px 15%;
+		text-align: right;
+		color: white;
+		font-size: 20px;
+	}
+	
+	@media only screen and (min-width : 760px) {
+		h1 {
+			padding: 150px 25% 30px;
+		}
+		ul {
+			padding: 0 25%;
+		}
+		
+		ul.loginBtn {
+			padding: 40px 25%;
+		}	
+	}
+	
+          
+    </style>
+  
+			</head>
+  <body onload="onDocumentLoaded();" style="margin: 0;">
+    <div id="authenticationPage">
+      <h1>Please sign in</h1>
+      <ul class="loginDetails">
+      	<li><label for="username">Username</label><input id="username" type="text" value="" /></li>
+      	<li><label for="password">Password</label><input id="password" type="password" value="" /></li>
+      </ul>
+      <ul id='loginBtn' class="loginBtn">
+      	<li><span>Sign in</span></li>
+      </ul>
+    </div>
+
+			<script type="text/javascript" src="../public/resources/URI.js?cachefix"></script>
+	<script type="text/javascript" src="../public/resources/location_utils.js?cachefix"></script>
+	<script type="text/javascript">
+			function onLogin() {
+				var username = document.getElementById("username").value;
+				var password = document.getElementById("password").value;
+				var uri = URI('ctauth://authenticate');
+				uri.setQuery('username', username);
+				uri.setQuery('password', password);
+				window.locationUtils.setURI(uri);
+			}
+        
+			function onDocumentLoaded() {    
+				var el = document.getElementById('loginBtn');
+				el.addEventListener('click', onLogin, false);
+				var uri = window.locationUtils.getURI();
+				if (uri.hasQuery('username')) {
+					el = document.getElementById('username');
+					el.value = uri.query(true).username;
+				}
+			}
+			</script>
+			</body>
+</html>

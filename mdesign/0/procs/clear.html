@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+	<html>
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>Device Cleardown</title>
+    <style type="text/css">
+    html, body {
+            height: 100%;
+    }      
+    body {
+    		background-color: white;       
+    		font-family: Helvetica;
+        	font-size: 14px;
+        	margin: 0;
+        	padding: 0;
+        	}
+        img {
+      	margin-top: 50px;
+      	width: 50%;
+      	max-width: 320px;
+    }
+    h1, h2 {
+        
+    font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 1.6em;
+        font-weight: bold;
+        color: rgb(47,47,47);
+        margin: 10px 20px 6px;
+  
+        text-align: center;      
+    }
+        .toolbar {
+        -webkit-box-sizing: border-box;
+        border-bottom: 1px solid #2d3642;
+        padding: 10px;
+        height: 45px;
+        background-color: #6d84a2;
+        position: relative;
+        }
+        .toolbar > h1 {
+        position: absolute;
+        overflow: hidden;
+        left: 50%;
+        top: 10px;
+        line-height: 1em;
+        margin: 1px 0 0 -120px;
+        height: 40px;
+        font-size: 20px;
+        width: 240px;
+        font-weight: bold;
+        text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #fff;
+        }
+        h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
+        margin-top: 0;
+        }
+        ul {
+        color: black;
+        background: #fff;
+        border: 1px solid #B4B4B4;
+        font: bold 17px "Helvetica Neue", Helvetica;
+        padding: 0;
+        margin: 15px 10px 17px 10px;
+        -webkit-border-radius: 8px;
+        }
+        ul li { 
+        color: #666;
+        border-top: 1px solid #B4B4B4;
+        list-style-type: none;
+        padding: 10px 10px 10px 10px;
+        }
+        li:first-child, li:first-child a { 
+        border-top: 0;
+        -webkit-border-top-left-radius: 8px;
+        -webkit-border-top-right-radius: 8px;
+        } 
+        li:last-child, li:last-child a { 
+        -webkit-border-bottom-left-radius: 8px;
+        -webkit-border-bottom-right-radius: 8px;
+        }
+        ul li a {
+        color: #000;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+        padding: 12px 10px 12px 10px;
+        margin: -10px;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        }
+        ul li a.button { 
+        background-color: #194fdb;
+        color: white;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        }
+        ul li.log { 
+        background-color: white;
+        color: black;
+        text-align: left;
+        font-size: 10px;
+        font-weight: normal;
+        }        
+        #userPage h2 {
+        text-align: center;
+        margin-top: 5em;
+        }
+      </style>
+  
+		</head>
+  <body onload="onDocumentLoaded();" style="margin: 0;">
+    <center>
+	  <img src="data:image/png;base64,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" />
+	</center>
+    <div id="idForDebug" style="display:none;">
+      <div class="toolbar">
+        <h1>Cleardown Device</h1>
+      </div>
+      <div>
+        <h2>Use the Clear button below to clear all cookies, local storage and databases related to mDesign from this device.</h2><br><br><ul>
+          <li><a class="button" onclick="onClear()">Clear</a></li>
+        </ul>
+      </div>
+    </div>
+    <div>
+        <div>
+            <ul style="display: block; ">
+                <li id="log" class="log"></li>
+            </ul>             
+        </div>
+    </div>
+  
+		<script type="text/javascript" src="../public/resources/URI.js"></script>
+	<script type="text/javascript" src="../public/resources/location_utils.js"></script>
+	<script src="../../../cordova.js"></script><script>window.isPhoneGapBuild = true;</script><script type="text/javascript" src="../public/resources/cleardown.js"></script>
+	<script type="text/javascript" src="../public/resources/clear.js"></script>
+	
+		</body>
+</html>

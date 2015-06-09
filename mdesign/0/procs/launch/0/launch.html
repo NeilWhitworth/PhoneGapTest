@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+	<!--
+		Debug info:
+			Launch page apptype=ppa, resourceversion=1
+			Process list
+			process0.d70a0ad6-e833-45b9-bc93-feae5ce46609 = pgbs_p1 (0)
+			
+			State
+				normal
+			Error Message
+				-->
+	<html>
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../../../resources/1/favicon.ico">
+    <title>mDesign Processes</title>
+	<!--minimized Android-->
+	<!--using default cross platform theme-->
+			<link type="text/css" rel="stylesheet" href="../../../resources/1/style/android/mdc.css">
+	<link type="text/css" rel="stylesheet" href="../../../resources/1/style/android/mdc7.css">
+	<script>
+	var MCAPTURE_CFG = {
+		appType: 'ppa',
+		clearType: 'full',
+		deviceClient: 'unrestricted',
+		deviceFormat: 'standard',
+		deviceScreen:  '',
+		deviceType: 'Android',
+		haveHomeProcess: false,
+		havePpaData: true,
+		homeProcessURL: '',
+		lastManifestGuid: 'cf59137b-fbb9-4138-b0ce-ef0603055aef',
+		launchPageMsg:  "",
+		isMisconfiguration: false,
+		isTesting: 'yes',  // yes or no
+		mSuiteUserName: '',
+		mSuiteGroupName: '',
+		mSuiteGroupId: '',
+		mcId: '0',
+		ppaRelativePath: '../../../../../data/',
+		processCount: 1,
+		processes: [ 
+						'process0.d70a0ad6-e833-45b9-bc93-feae5ce46609'],
+		processJsFiles: [
+							
+										'../../process0.d70a0ad6-e833-45b9-bc93-feae5ce46609/0/visualize.js',
+										
+										
+									''
+								
+		]						
+	};
+	</script>
+    <title>PPA Load Page</title>
+        <style type="text/css">  
+    html, body {
+        height: 100%;    
+	}      
+    body {        
+        font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 17px;
+        font-weight:300;        
+        margin: 0;
+        padding: 0;
+        background-color: #5F8DE2;
+	}
+	
+	h1 {
+		font-weight:300;  
+		font-size: 1.6em; 
+		background-color: #fff;
+		margin: 0;
+		padding: 40px 15% 30px;
+		}
+	
+	ul {
+		list-style: none inside none;
+		margin: 0;
+		padding: 0 15%;
+		}
+	ul li {
+		position: relative;
+		white-space: no-wrap;
+	}
+	ul.loginDetails {
+		background-color: #fff;
+		border-bottom: 20px solid #fff;
+		}
+	ul.loginDetails li:first-child {
+		color: #5F8DE2;
+	}
+	ul.loginDetails li:last-child {padding-bottom: 20px;}
+	label {
+		display: block;
+		padding: 5px;
+		}
+	
+	input {
+		padding: 8px;
+		background-color: #ECEBED;
+		display: block;
+		height: 30px;
+		width: 100%;
+		border: none;
+		font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 17px;
+        font-weight:300; 
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}	
+	
+	input:focus {
+		background-color: white;
+		border: 1px solid #ECEBED;
+	}
+	
+	ul.loginBtn {
+		border-top: 30px solid #ECEBED;
+		background-color: #5F8DE2;
+		padding: 40px 15%;
+		text-align: right;
+		color: white;
+		font-size: 20px;
+	}
+	
+	@media only screen and (min-width : 760px) {
+		h1 {
+			padding: 150px 25% 30px;
+		}
+		ul {
+			padding: 0 25%;
+		}
+		
+		ul.loginBtn {
+			padding: 40px 25%;
+		}	
+	}         
+    </style>
+  
+	</head>
+  <body>
+    <div class="jmuiLayout jmuiCurrent">
+      <div class="jmuiColumn">
+    <div id="ppaLoadingPage" class="jmuiPage">
+      <div class="jmuiHeader jmuiToolbar">
+        <h1>Preparing Application</h1>
+      </div>
+      <h2>Loading data...</h2>
+    </div>
+	<div class="jmuiPage" id="InitAppPage">
+      <div class="jmuiHeader jmuiToolbar">
+        <h1>Preparing Application</h1>
+      </div>
+      <h2>Initializing application...</h2>  
+	</div>
+	<div class="jmuiPage" id="Nothing">
+      <div class="jmuiHeader jmuiToolbar">
+        <h1></h1>
+      </div>
+      <h2></h2>
+    </div>
+  <div class="jmuiPage jmuiCurrent" id="processesPage">
+          <div class="jmuiHeader jmuiToolbar">
+            <h1>Processes</h1>
+            <div class="jmuiCancelButton">Clear</div>
+            <div class="jmuiActionButton">Sync</div>
+          </div>
+          <div class="jmuiScroller">
+            <div>
+              <ul id="inlineProcessSelector" dataid="inlineProcessSelector" class="jmuiEdgetoedge processSelectorInline"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="jmuiPage" id="subjectsPage">
+          <div class="jmuiHeader jmuiToolbar">
+            <h1>Subjects</h1>
+            <div class="jmuiBackButton">Back</div>
+            <div class="jmuiAddButton NewSubject">+</div>
+          </div>
+          <div class="jmuiScroller">
+            <div>
+              <ul id="inlineSubjectSelector" dataid="inlineSubjectSelector" processDataId="inlineProcessSelector" class="jmuiEdgetoedge subjectSelectorInline"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="jmuiPage" id="replicatePage">
+          <div class="jmuiHeader jmuiToolbar">
+            <h1>Syncing</h1>
+            <div class="jmuiCancelButton">Cancel</div>
+          </div>
+          <div class="jmuiScroller">
+            <div>
+              <div class="replicate">
+                <h2>Syncing...</h2>
+                <div class="progressBar">
+                  <div id="replicateProgressComplete" class="progressComplete"></div>
+                </div>
+                <h2 class="statusText">status</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><script type="text/javascript" src="../../../public/resources/URI.js"></script>
+	<script type="text/javascript" src="../../../public/resources/location_utils.js"></script>
+	
+	<!--consolidated mcapture logging libraries-->
+	<script type="text/javascript" src="../../../resources/1/mdclog.js"></script>
+	<script type="text/javascript" src="../../../resources/1/clientappcache.js"></script>
+	<script type="text/javascript" src="../../../resources/1/appcache.js"></script>
+	<script type="text/javascript">
+		//debugger;
+		window.mdesignshell = true;
+		</script>
+		<script type="text/javascript" src="../../switch.js"></script>
+		
+	<!--consolidated mcapture function libraries-->
+	<script type="text/javascript" src="../../../resources/1/mdc.js"></script>
+	
+	<!--manifest of data to be loaded into PPA-->
+	<script src="../../../../../data/data.js"></script>
+	<!--jquery is now needed for all platforms - see Mark Anthony ZD #6917-->
+	<script type="text/javascript" src="../../../resources/1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../../../public/resources/launch.js"></script>
+	<script type="text/javascript" src="../../../public/resources/launch2.js"></script>
+	
+	</body>
+</html>

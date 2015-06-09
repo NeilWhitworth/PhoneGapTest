@@ -1,0 +1,284 @@
+.auditGrid
+{
+	margin-top:0px!important	
+}
+
+.auditGrid>ul>li
+{
+	margin:0px!important;
+	padding:0px!important;
+}
+
+.auditGrid thead th 
+{
+    padding: 0px!important;
+}
+
+
+.md_compositeInlineContainer {
+    padding: 5px;
+    border: 1px solid silver;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.auditGrid tr[rowtype="title"] {
+    font-weight: bold;
+}
+
+.auditGrid tr[rowtype="question"] td.reference {
+    background: silver!important;
+    color: white;
+    text-align: center;
+    padding-left: 0px!important;
+}
+
+tr.missing td {
+    /* border: 1px solid red!important; */
+    background: rgb(213, 213, 213)!important;
+}
+
+.auditGrid tr[rowtype="question"].missing td.reference {
+
+    /* border: 1px solid red!important; */
+    background: red!important;
+}
+
+.auditGrid tr[rowtype="question"].Answered .reference
+{
+	background: rgb(108, 211, 108);
+}
+
+.auditGrid .option {
+    height: 45px;
+    width: 45px;
+    display: -webkit-inline-box;
+    color:silver;
+}
+
+.auditGrid td.answer[value="PASS"]>.picker>.option.PASS{
+    color: #2BA735!important;
+}
+
+.auditGrid td.answer[value="FAIL"]>.picker>.option.FAIL {
+    color: #D34646!important;
+}
+
+.auditGrid .answer .form {
+    height: 45px;
+    width: 120px;
+    border-radius:6px
+}
+
+.auditGrid .option.Yes::before,
+.auditGrid .option.PASS::before,
+.auditGrid .option.Confirm::before {
+    content: "\F058";
+    font-size: 40px;
+     margin-top: 2px;
+    margin-left: 5px;
+}
+
+.auditGrid .option.FAIL::before,
+.auditGrid .option.No::before {
+    content: "\F057";
+    font-size: 40px;
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+.auditGrid .answer .form,
+.auditGrid select {
+    background: whitesmoke;
+    border: 1px solid rgb(204, 204, 204)!important;
+}
+
+.auditGrid td.answer .form {
+    margin: 0px!important;
+}
+
+.auditGrid .picker {
+    text-align: center;
+}
+
+.auditGrid .answer.picklist::after {
+    content: "\F107";
+    position: absolute;
+    right: 11px;
+    top: 20px;
+}
+
+.auditGrid .formButton {
+    width: 100%;
+    height: 100%;
+}
+
+.auditGrid td.answer .formButton::after {
+    content: "\F0ae";
+    font-size: 30px;
+    margin-left: 45px;
+    color: grey;
+    position: absolute;
+    margin-top: 9px;
+}
+
+.auditGrid tr[rowtype="question"] .label {
+    font-size: 15px;
+}
+
+.auditGrid .action {
+padding-right: 10px!important;
+}
+
+.auditGrid .action.comment .actionbutton::before {
+    content: "\F0E6";
+    text-align: center;
+    margin-left: 0px;
+    color: rgb(207, 207, 207);
+    font-size: 32px;
+}
+
+.auditGrid .action.fail .actionbutton::before {
+    content: "\F06A";
+    text-align: center;
+    margin-left: 0px;
+    color: rgb(207, 207, 207);
+    font-size: 40px;
+}
+
+.auditGrid .action.comment.hasComment .actionbutton::before {
+	color:orange;
+}
+
+.auditGrid .action.fail.hasComment .actionbutton::before {
+	color:orange;
+}
+
+.auditGrid .md_toolbarButton.previous {
+    width: 20px!important;
+}
+
+.auditGrid tr[rowtype="title"] {
+    background: #009CDE;
+    border-bottom: 2px solid grey;
+ }
+
+.auditGrid tr[rowtype="title"] .label {
+    color: black!important;
+    font-weight: bold;
+    margin-left: -30px;
+    margin-top:-10px;
+    position: absolute;
+}
+
+.auditGrid td.answer {
+    padding: 2px!important;
+}
+
+tr[rowtype="title"] {
+    height: 36px;
+}
+
+#survey .jmuiScroller,
+#survey .jmuiNativeScroller
+{
+	overflow:inherit!important;
+}
+
+.PopupStyle #Commentscomments {
+    border: 1px solid grey!important;
+}
+
+.PopupStyle .md_textInlineContainer
+{
+    padding: 10px 10px 40px 10px !important;
+    border: 0px!important;
+}
+
+.PopupStyle .jmuiScroller, 
+.PopupStyle .jmuiNativeScroller {
+width: 80%;
+border: 1px solid #012169;
+border-radius: 5px;
+}
+
+ul#CommentsalSave li.jmuiArrow {
+    display: -webkit-inline-box;
+    margin: auto;
+    border-radius: 5px!important;
+    border-top-width: 2px!important;
+}
+ul#CommentsalSave {
+    margin: auto;
+    display: table;
+}
+div#Comments {
+    padding-top: 80px;
+}
+textarea {
+    font-family: Arial;
+}
+
+.auditGrid select option {
+    text-align: center!important;
+}
+
+.auditGrid .picklist {
+    text-indent: center!important;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]+label {
+    width:40px;
+    text-align:right;
+}
+
+
+input[type="radio"]+label::before {
+    content:"\F10C";
+    position:absolute;
+    left:20px;
+    top:0px;
+    color:silver;
+    font-size:30px
+    
+}
+
+input[type="radio"]:checked+label::before {
+    content:"\F111";
+}
+
+#notes input[type="radio"][value="Yes"]+label::before {
+    content:"\F058"!important;
+}
+
+#notes input[type="radio"][value="No"]+label::before {
+    content:"\F057"!important;
+}
+
+#notes input[type="radio"]:checked+label::before {
+    color:#009CDE;
+}
+
+#notes h2.jmuiLateral.jmuiEdge {
+min-width: 180px;
+}
+
+.auditGrid {
+    background: rgb(238, 238, 238)!important;
+}
+
+.auditGrid tr.jmuiSelected {
+background-color: initial!important;
+}
+
+.checkListComments>.checkListComments {
+    height: 200px;
+    background: whitesmoke;
+    margin: 20px;
+    padding: 5px;
+    border: 1px solid grey;
+}

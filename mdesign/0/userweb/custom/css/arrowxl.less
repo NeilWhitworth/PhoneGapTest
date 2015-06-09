@@ -1,0 +1,341 @@
+@font-face {
+  font-family: arrowFont;
+  src: url('../../../userweb/custom/fonts/Harabara.ttf');
+}
+@font-face {
+  font-family: segoe_ui;
+  src: url('../../../userweb/custom/fonts/segoeui.ttf');
+}
+@font-face {
+  font-family: segoe_ui_light;
+  src: url('../../../userweb/custom/fonts/segoeuil.ttf');
+}
+* {
+  font-family: segoe_ui, Arial;
+}
+.jmuiPage.jmuiPageScroller {
+  padding-top: 50px;
+  padding-bottom: 60px;
+  background-color: #c8c8c8;
+  background-repeat: no-repeat;
+  background-position: center;
+  bottom: 0px;
+  height: 100%;
+}
+.jmuiScroller,
+.jmuiPageScroller .jmuiNativeScroller {
+  background-color: #c8c8c8 !important;
+}
+.hidden {
+  display: none!important;
+}
+.disabled {
+  background: silver!important;
+  color: grey!important;
+}
+.disabled div {
+  background: silver!important;
+  color: #9b9b9b !important;
+  border-color: #9b9b9b;
+}
+.contextMenu {
+  width: 40px!important;
+  min-width: 40px!important;
+  background: none!important;
+  border: none!important;
+  position: absolute;
+  right: 0px;
+  top: 3px!important;
+}
+.contextMenu::before {
+  content: "\F0C9" !important;
+}
+.jmuiHeader.jmuiToolbar,
+.jmuiHeader .jmuiToolbar {
+  background: #722ea5;
+  border-color: #722ea5;
+  border-bottom: 1px solid white;
+  height: 50px;
+}
+.jmuiFooter.jmuiToolbar,
+.jmuiFooter .jmuiToolbar {
+  background: #722ea5;
+  border-color: #722ea5;
+  border-top: 1px solid white;
+  height: 60px;
+  z-index: 900;
+}
+.md_inlineContainer h2 {
+  padding-bottom: 0px;
+  color: #722ea5;
+}
+.md_inlineContainer,
+.md_inlineContainer ul {
+  background: transparent!important;
+}
+input[type="text"],
+input[type="password"],
+textarea {
+  background: white!important;
+  border: 1px solid #d5d5d5 !important;
+  height: 40px;
+  line-height: 30px;
+}
+.md_toolbarButton {
+  height: 45px;
+  font-weight: normal!important;
+  font-family: arrowFont;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+}
+.jmuiFooter .md_toolbarButton {
+  border: 2px solid white;
+  height: 50px;
+  line-height: 45px;
+  margin: 4px 2px;
+  border-radius: 22px;
+  background: white;
+  font-weight: normal!important;
+  min-width: 150px;
+  box-sizing: border-box;
+  max-width: 0px!important;
+  display: block;
+  color: #722ea5;
+  font-family: arrowFont;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+}
+.addPhoto::before {
+  content: "\F030";
+}
+.jmuiBackButton {
+  background: inherit!important;
+  border: 0px!important;
+  width: 75px!important;
+  max-width: 75px!important;
+  min-width: 75px!important;
+  color: white;
+  margin-top: 4px;
+  margin-left: 35px!important;
+}
+.jmuiListPage .jmuiBackButton {
+  width: 0px!important;
+  min-width: 0px!important;
+  max-width: 0px!important;
+}
+.jmuiBackButton::before {
+  content: "\F137" !important;
+  padding: 0px;
+  font-size: 28px;
+  margin-top: 0px;
+  position: absolute;
+  left: 10px;
+}
+.buttonBottomRight {
+  right: 0px!important;
+  bottom: 0px!important;
+  position: absolute;
+  color: black!important;
+  background: #c9dd03 !important;
+}
+.buttonBottomLeft {
+  left: 0px!important;
+  bottom: 0px!important;
+  position: absolute;
+}
+.buttonTopRight {
+  right: 0px!important;
+  top: 0px!important;
+  position: absolute;
+}
+.buttonTopLeft {
+  left: 0px!important;
+  top: 0px!important;
+  position: absolute;
+}
+.arrowIcon {
+  background: url(../../../userweb/custom/img/smallLogo.png);
+  height: 35px!important;
+  width: 60px!important;
+  position: absolute;
+  right: 0px!important;
+  background-size: contain;
+  top: 5px;
+}
+.jmuiHeader .extra {
+  height: 0px;
+  width: 100%;
+  max-width: none!important;
+  text-align: right;
+  left: 0px;
+  position: absolute;
+}
+.jmuiHeader .extra div.arrowTopLogo {
+  font-family: arrowFont!important;
+  color: white;
+  margin-right: -33.5px;
+  top: 10px!important;
+  position: absolute;
+  right: 50%;
+  font-size: 22px;
+  margin-top: 3px;
+}
+.jmuiHeader .extra div.arrowTopLogo span {
+  font-family: arrowFont!important;
+  color: #c9dd03;
+}
+.jmuiFooter.jmuiToolbar.arrowFooter {
+  display: block;
+  box-sizing: border-box;
+}
+/* CONTEXT MENU */
+
+.jmuiPage.jmuiCurrent.contextMenuVisible {
+  margin-left: -70% !important;
+  border-right: 2px solid white;
+}
+.jmuiPage.jmuiCurrent.contextMenuVisible .jmuiHeader,
+.jmuiPage.jmuiCurrent.contextMenuVisible .jmuiFooter {
+  right: 70%;
+  width: 100%;
+  position: absolute;
+  border-right: 2px solid white;
+  -webkit-animation: moveCurrentPage 5s;
+}
+.jmuiPage.jmuiCurrent.contextMenuVisible .jmuiHeader .arrowTopLogo,
+.jmuiPage.jmuiCurrent.contextMenuVisible .jmuiHeader .pageBack {
+  display: none;
+  -webkit-animation: moveCurrentPage 5s;
+}
+#contextMenuMask {
+  margin-left: -100%;
+}
+#contextMenuMask.contextMenuVisible {
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0);
+  position: absolute;
+  z-index: 999;
+  margin-left: -70%;
+  overflow: hidden;
+  /*-webkit-animation: showMenu 5s;*/
+
+}
+@-webkit-keyframes moveCurrentPage {
+  0% {
+    right: 0%;
+  }
+  25% {
+    right: 18%;
+  }
+  50% {
+    right: 36%;
+  }
+  75% {
+    right: 54%;
+  }
+  100% {
+    right: 72%;
+  }
+}
+@-webkit-keyframes showMenu {
+  0% {
+    margin-left: 0%;
+  }
+  25% {
+    margin-left: -18%;
+  }
+  50% {
+    margin-left: -36%;
+  }
+  75% {
+    margin-left: -54%;
+  }
+  100% {
+    margin-left: -72%;
+  }
+}
+#contextMenuPanel {
+  background: #5d5d5d;
+  height: 100%;
+  width: 70%;
+  margin-left: 30%;
+}
+ul#contextMenu {
+  display: none;
+}
+.contextMenuVisible ul#contextMenu {
+  display: block!important;
+}
+ul#contextMenu li.menuItem {
+  margin-left: 0px;
+  background: dimgrey;
+  text-indent: 60px;
+  margin: 20px 0px;
+  color: white;
+  line-height: 45px;
+}
+ul#contextMenu ul#contextMenu i {
+  height: 40px;
+}
+ul#contextMenu li i::before {
+  top: 50%;
+  position: absolute;
+  margin-top: 16px;
+  left: -5px;
+  font-size: 30px;
+}
+.auditGrid tr[rowtype="service"].jmuiSelected,
+.auditGrid tr[rowtype="service"].jmuiPressed td {
+  background: white!important;
+}
+.selectionInline .jmuiArrow {
+  padding: 0px!important;
+  height: 40px!important;
+  margin-right: 0px!important;
+}
+.selectionInline .jmuiArrow select {
+  padding: 0px 5px!important;
+  height: 40px!important;
+}
+.selectionInline .jmuiArrow::after {
+  padding: 0px!important;
+  height: 40px!important;
+  margin-right: 20px!important;
+}
+.busyMask {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: rgba(241, 241, 241, 0.5) !important;
+  z-index: -999;
+}
+.busyMask.busy {
+  z-index: 999;
+}
+.busyMask > div {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(../img/hourglass.png) !important;
+  -webkit-animation: spin 2s infinite linear;
+  width: 70px;
+  height: 70px;
+  margin-left: -35px;
+  margin-top: -35px;
+  background-size: contain;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <title>PPA Load Page</title>
+        <style type="text/css">  
+    html, body {
+        height: 100%;    
+	}      
+    body {        
+        font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 17px;
+        font-weight:300;        
+        margin: 0;
+        padding: 0;
+        background-color: #5F8DE2;
+	}
+	
+	h1 {
+		font-weight:300;  
+		font-size: 1.6em; 
+		background-color: #fff;
+		margin: 0;
+		padding: 40px 15% 30px;
+		}
+	
+	ul {
+		list-style: none inside none;
+		margin: 0;
+		padding: 0 15%;
+		}
+	ul li {
+		position: relative;
+		white-space: no-wrap;
+	}
+	ul.loginDetails {
+		background-color: #fff;
+		border-bottom: 20px solid #fff;
+		}
+	ul.loginDetails li:first-child {
+		color: #5F8DE2;
+	}
+	ul.loginDetails li:last-child {padding-bottom: 20px;}
+	label {
+		display: block;
+		padding: 5px;
+		}
+	
+	input {
+		padding: 8px;
+		background-color: #ECEBED;
+		display: block;
+		height: 30px;
+		width: 100%;
+		border: none;
+		font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 17px;
+        font-weight:300; 
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}	
+	
+	input:focus {
+		background-color: white;
+		border: 1px solid #ECEBED;
+	}
+	
+	ul.loginBtn {
+		border-top: 30px solid #ECEBED;
+		background-color: #5F8DE2;
+		padding: 40px 15%;
+		text-align: right;
+		color: white;
+		font-size: 20px;
+	}
+	
+	@media only screen and (min-width : 760px) {
+		h1 {
+			padding: 150px 25% 30px;
+		}
+		ul {
+			padding: 0 25%;
+		}
+		
+		ul.loginBtn {
+			padding: 40px 25%;
+		}	
+	}         
+    </style>
+  </head>
+  
+  <body>
+    <div id="ppaLoadingPage" class="jmuiPage">
+      <div class="jmuiHeader jmuiToolbar">
+        <h1>Preparing Application</h1>
+      </div>
+      <h2>Loading data...</h2>
+    </div>
+	<div id="InitAppPage">
+      <div class="jmuiHeader jmuiToolbar">
+        <h1>Preparing Application</h1>
+      </div>
+      <h2>Initializing application...</h2>  
+	</div>
+	<div id="Nothing">
+      <div class="jmuiHeader jmuiToolbar">
+        <h1></h1>
+      </div>
+      <h2></h2>
+    </div>
+  </body>
+  
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+	<!--DevType=Android, DevFormat=standard, Client=unrestricted, Screen=-->
+	<!--User is , mSuiteSerialNo = 0-->
+	<html>
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Updating Applications</title>
+    <style type="text/css">  
+	html, body {
+		height: 100%;
+	}      
+	body {        
+		font-family: Helvetica;
+		font-size: 14px;
+		margin: 0;
+		padding: 0;
+		background-color: white;
+	}	
+	#userPage {
+		text-align: center;
+	}
+	img {
+		margin-top: 50px;
+		width: 50%;
+		max-width: 320px;
+	}
+	h1, h2 {  
+		font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+		font-size: 1.6em;
+		font-weight: bold;
+		color: rgb(47,47,47);
+		margin: 0;
+		padding-top: 50px;   
+	}
+	h2 {
+		font-weight: normal; color: rgb(80,80,80);
+	}
+	.toolbar { 
+		-webkit-box-sizing: border-box;
+		border-bottom: 1px solid #2d3642;      
+		padding: 10px;     
+		height: 45px;    
+		background-color: #6d84a2;        
+		position: relative;        
+	}
+	.toolbar > h1 {   
+		position: absolute;      
+		overflow: hidden;     
+		left: 50%;    
+		top: 10px;      
+		line-height: 1em;     
+		margin: 1px 0 0 -120px;
+		height: 40px;
+		font-size: 20px;
+		width: 240px;
+		font-weight: bold;
+		text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0;
+		text-align: center;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		color: #fff;      
+	}
+	h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
+		margin-top: 0;     
+	}
+	ul {    
+		color: black;
+		background: #fff;
+		border: 1px solid #B4B4B4;
+		font: bold 17px "Helvetica Neue", Helvetica;
+		padding: 0;
+		margin: 20px 50px;
+		border-radius: 8px;     
+	}
+	ul li {
+		color: #666;
+		border-top: 1px solid #B4B4B4;
+		list-style-type: none;
+		padding: 10px 10px 10px 10px;     
+	}
+	li:first-child, li:first-child a {
+		border-top: 0;
+		-webkit-border-top-left-radius: 8px;
+		-webkit-border-top-right-radius: 8px;
+	}
+	li:last-child, li:last-child a {
+		-webkit-border-bottom-left-radius: 8px;
+		-webkit-border-bottom-right-radius: 8px;     
+	}
+	ul li a {
+		color: #000;
+		text-decoration: none;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		display: block;
+		padding: 12px 10px 12px 10px;
+		margin: -10px;
+		-webkit-tap-highlight-color: rgba(0,0,0,0);     
+	}
+	ul li a.button {
+		background-color: #194fdb;
+		color: white;
+		text-align: center;
+		font-size: 20px;
+		font-weight: bold;       
+	}
+	.progressBar {
+		background: #B8B8B8;
+		border: 1px solid #B4B4B4;
+		margin: 20px 50px;
+		border-radius: 8px;      
+	}        
+	progress {
+		border-radius: 8px;
+		height: 8px;
+		display: inline-block; 
+		width: 224px;
+	}
+	.progressComplete {
+		-webkit-border-radius: 8px;
+		background-image: -webkit-gradient(linear, left top, left bottom, from(#6297f2), to(#2a55b1));
+		height: 8px;
+		width: 0%;     
+	}          
+    </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../resources/1/favicon.ico"><script type="text/javascript">
+		var MCEX = (function() {
+			var my = {
+			}; 
+			function getDeviceType() {
+				return 'Android';     		
+			}
+			function getPpaVersion() {
+				return '91e39349-f831-45f1-9acf-c71e48d97ec5'; 
+			}
+			function isUnrestricted() {
+				var x_deviceClient = 'unrestricted';
+				return x_deviceClient == 'unrestricted';			
+			}
+			my.getDeviceType = getDeviceType;
+			my.getPpaVersion = getPpaVersion;
+			my.isUnrestricted = isUnrestricted; 		
+			return my;
+		}());
+		</script><style type="text/css">
+			img {
+			margin-top: 100px;
+			}
+			h1, h2 {
+			margin: 10px 20px 6px;
+			text-align: center;
+			}
+			.toolbar > h1  {
+			font-weight:  bold;
+			color: rgb(47,47,47);
+			}
+			ul  {
+			margin: 15px 10px 17px 10px;
+			-webkit-border-radius: 8px;
+			}
+			ul li a.button  {
+			background-color: #72217B;
+			}
+			</style>
+  </head>
+  <body onload="afterLoad()">
+    <div id="userPage" style="display:block;">
+        <center><img src="../resources/1/mDesign_icon.png" /></center>
+      <h2>Updating Applications...</h2>
+      <!-- progress bar will be added programmatically here -->
+    </div>
+    <script type="text/javascript">
+    MCEX.innerLoad = function () {
+      var progressParent = document.getElementById('userPage');
+      if (MCEX.getDeviceType()=='WP') {
+        var progress = document.createElement('progress');
+        progress.id = 'progressBar';
+        progress.className = 'progressBar';
+        progress.max = 100;
+        progress.value = 0;
+        progressParent.appendChild(progress);
+      } else {
+        var div = document.createElement('div');
+        div.id = 'progressBar';
+        div.className = 'progressBar';
+        var innerDiv = document.createElement('div');
+        innerDiv.id = 'updateProgressComplete';
+        innerDiv.className = 'progressComplete';
+        div.appendChild(innerDiv);
+        progressParent.appendChild(div);
+      }              
+    };
+    </script>
+<script type="text/javascript">
+		function afterLoad() {
+			MCEX.innerLoad();
+		}
+		</script>
+		<script type="text/javascript" src="../public/resources/URI.js"></script>
+	<script type="text/javascript" src="../public/resources/location_utils.js"></script>
+	
+	<!--consolidated mcapture logging libraries-->
+	<script type="text/javascript" src="../resources/1/mdclog.js"></script>
+	
+		<script type="text/javascript">
+			// Always true for PPAs so because phonegap is always available
+              window.localStorage.phonegapPresent = true;
+		</script><script type="text/javascript">
+		window.mdesignshell = true;
+		</script>
+		
+		<script type="text/javascript" src="../resources/1/clientappcache.js"></script>
+	<script type="text/javascript">
+				document.addEventListener( "DOMContentLoaded", function() {
+					function reqListener () {
+						console.log('androidappcacheFIX complete: ' + this.responseText);
+					}
+					console.log('Doing XHR for androidappcacheFIX.js');
+					var xhr = new XMLHttpRequest();
+					xhr.onload = reqListener;
+					xhr.open("get", "androidappcacheFIX.js", true);
+					xhr.send();
+				}, false);
+				</script>
+		<script type="text/javascript" src="../resources/1/appcache.js"></script>
+	<script type="text/javascript" src="./switch.js"></script>
+		<script type="text/javascript">
+        window.localStorage.shellType = 'phonegap';
+		localStorage.showDiagnostics="off";
+		</script>
+		<script>
+		var script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = '../resources/1/loader.js';
+		var head = document.getElementsByTagName('head')[0];
+		head.appendChild(script);
+		</script>
+		</body>
+</html>
