@@ -110,7 +110,8 @@
      } ,
   
 					qIdMap : {
-					t1 : 't1',
+					lbl1 : 'lbl1',
+              t1 : 't1',
               photo1 : 'photo1',
               b1 : 'b1'
             }
@@ -186,6 +187,12 @@
       qIds: [
       
         'b1'
+      ]
+      },
+      'lbl1': {
+      qIds: [
+      
+        'lbl1'
       ]
       }
     },

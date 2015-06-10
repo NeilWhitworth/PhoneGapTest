@@ -798,11 +798,11 @@ var nextTick =(function () {
 // modifications.
 // There is no situation where this is necessary.
 // If you need a security guarantee, these primordials need to be
-// deeply frozen anyway, and if you donâ€™t need a security guarantee,
+// deeply frozen anyway, and if you don’t need a security guarantee,
 // this is just plain paranoid.
 // However, this **might** have the nice side-effect of reducing the size of
 // the minified code by reducing x.call() to merely x()
-// See Mark Millerâ€™s explanation of what this does.
+// See Mark Miller’s explanation of what this does.
 // http://wiki.ecmascript.org/doku.php?id=conventions:safe_meta_programming
 var call = Function.call;
 function uncurryThis(f) {
@@ -1505,8 +1505,8 @@ Q.thenReject = function (promise, reason) {
 /**
  * If an object is not a promise, it is as "near" as possible.
  * If a promise is rejected, it is as "near" as possible too.
- * If itâ€™s a fulfilled promise, the fulfillment value is nearer.
- * If itâ€™s a deferred promise and the deferred has been resolved, the
+ * If it’s a fulfilled promise, the fulfillment value is nearer.
+ * If it’s a deferred promise and the deferred has been resolved, the
  * resolution is "nearer".
  * @param object
  * @returns most resolved (nearest) form of the object
@@ -11496,7 +11496,7 @@ mCapture = (function($) {
 /*
 ** END OF MC2.DB.JS
 */
-ï»¿(function($, mc) {
+﻿(function($, mc) {
 
      var FileSystemState = {
             UNREQUESTED: 0,
@@ -12609,7 +12609,7 @@ mCapture = (function($) {
 /*
 ** END OF MC2.NOTIFY.JS
 */
-ï»¿(function($, mc) {
+﻿(function($, mc) {
 
     var maxThumbWidth = 320,
         maxThumbHeight = 200,
@@ -24937,7 +24937,7 @@ function makeBinary(data, omitLength) {
         refresh: refresh
     };
     $ = undefined;
-} (window.jmfw, window.mCapture));ï»¿/*jslint browser: true, devel: true, bitwise: true, continue: true, evil: true, eqeq: true, forin: true, nomen: true, plusplus: true, regexp: true, sloppy: true, white: true */
+} (window.jmfw, window.mCapture));﻿/*jslint browser: true, devel: true, bitwise: true, continue: true, evil: true, eqeq: true, forin: true, nomen: true, plusplus: true, regexp: true, sloppy: true, white: true */
 (function($, mc) {
     // Console Logging
     var _data_in_transaction_total, dbTestRepl, debugLevel, Operations, _outstanding_storage_requests, profileResults, _pump_storage_queue, _storage_queue, _transaction_depth, _transaction_items, _transaction_running, _transaction_started, _update_progress, _update_progress_message, waiting, _storage_queue_data_length_threshold, _storage_queue_data_length, _storage_queue_item_length_default, _command_count, _commands_received;
@@ -28722,7 +28722,7 @@ function makeBinary(data, omitLength) {
 
 } (window.jmfw, window.mCapture));
 
-ï»¿(function($, mc) {
+﻿(function($, mc) {
 	var batteryLevel = -1;
 	var ac = undefined;
 	var registered = false;
@@ -29161,7 +29161,7 @@ function X2JS(config) {
 	};
 	
 }
-ï»¿(function($, mc) {
+﻿(function($, mc) {
     var progressMax, progressCurrent;
 
     function dataLoadRequired() {
@@ -29278,7 +29278,7 @@ function X2JS(config) {
         loadData: loadData
     };
 
-})(window.jmfw, window.mCapture);ï»¿(function($, mc) {
+})(window.jmfw, window.mCapture);﻿(function($, mc) {
 
 	var mcversion = 'debug build';
 

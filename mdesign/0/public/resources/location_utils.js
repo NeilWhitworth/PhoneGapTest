@@ -1,4 +1,4 @@
-ï»¿(function() {
+﻿(function() {
     /* URI is defined in URI.js */
     var _uri;
     

@@ -1,4 +1,4 @@
-ï»¿var clientAppCache = (function() {
+﻿var clientAppCache = (function() {
     var my = {},
         ready = false, 
         swapPending = false;

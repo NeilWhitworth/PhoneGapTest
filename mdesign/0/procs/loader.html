@@ -136,7 +136,7 @@
 				return 'Android';     		
 			}
 			function getPpaVersion() {
-				return '91e39349-f831-45f1-9acf-c71e48d97ec5'; 
+				return '4ffc0609-7599-4460-bd1e-6ff20ed73db8'; 
 			}
 			function isUnrestricted() {
 				var x_deviceClient = 'unrestricted';
@@ -216,16 +216,16 @@
 		
 		<script type="text/javascript" src="../resources/1/clientappcache.js"></script>
 	<script type="text/javascript">
-				document.addEventListener( "DOMContentLoaded", function() {
-					function reqListener () {
-						console.log('androidappcacheFIX complete: ' + this.responseText);
-					}
-					console.log('Doing XHR for androidappcacheFIX.js');
-					var xhr = new XMLHttpRequest();
-					xhr.onload = reqListener;
-					xhr.open("get", "androidappcacheFIX.js", true);
-					xhr.send();
-				}, false);
+					document.addEventListener( "DOMContentLoaded", function() {
+						function reqListener () {
+							console.log('shellappcacheFIX complete: ' + this.responseText);
+						}
+						console.log('Doing XHR for shellappcacheFIX.js');
+						var xhr = new XMLHttpRequest();
+						xhr.onload = reqListener;
+						xhr.open("get", "shellappcacheFIX.js", true);
+						xhr.send();
+					}, false);
 				</script>
 		<script type="text/javascript" src="../resources/1/appcache.js"></script>
 	<script type="text/javascript" src="./switch.js"></script>

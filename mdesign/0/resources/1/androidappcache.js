@@ -1,4 +1,4 @@
-ï»¿var androidAppCache = (function() {
+﻿var androidAppCache = (function() {
     var my = {},
         ready = false, 
         swapPending = false;

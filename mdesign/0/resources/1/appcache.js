@@ -1,4 +1,4 @@
-ï»¿window.ctAppCache = (function (applicationCaches) {
+﻿window.ctAppCache = (function (applicationCaches) {
     var active, caches = applicationCaches.filter(function (cache) { return !!cache; });
     function getActiveCache() {
         if (!active) {

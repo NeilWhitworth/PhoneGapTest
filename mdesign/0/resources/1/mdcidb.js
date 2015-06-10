@@ -1418,7 +1418,7 @@
 } (window.jmfw, window.mCapture));
 /*
 ** END OF MC2.IDB.JS
-*/ï»¿(function($, mc) {
+*/﻿(function($, mc) {
 
 	var mcversion = 'debug build';
 

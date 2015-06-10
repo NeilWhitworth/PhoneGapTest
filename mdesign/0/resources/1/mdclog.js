@@ -2157,7 +2157,7 @@ var log4javascript = (function() {
 	}
 	document.addEventListener('deviceready', cordovaReady, false);	
 }());
-ï»¿(function($, mc) {
+﻿(function($, mc) {
 
 	var mcversion = 'debug build';
 
