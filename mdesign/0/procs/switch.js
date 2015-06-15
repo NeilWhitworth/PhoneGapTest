@@ -8,7 +8,7 @@
 	if (deviceType == 'windows' || cordovaVersion < 3000000) {
 		directory = 'devices';
 		filename = 'device.js';
-	} else if {cordovaVersion < 3050100)
+	} else if (cordovaVersion < 3050100) {
 		directory = 'cordova';
 		filename = 'cordova.js';
 	} else {
