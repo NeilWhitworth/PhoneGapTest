@@ -5,9 +5,10 @@
     
     my.status = 0;
     
-    function fireEvent(eventName) {
+    function fireEvent(eventName,data) {
         var event = document.createEvent('Event');
-		event.initEvent('appcache-'+eventName, true, true);
+        event.initEvent('appcache-' + eventName, true, true);
+        event.data = data;
 		window.document.dispatchEvent(event);
     }
     
@@ -63,9 +64,9 @@
         my.setStatus(5);
         fireEvent('obsolete');
     };
-    
-    my.setProgress = function() {		
-        fireEvent('progress');
+
+    my.setProgress = function(detail) {
+        fireEvent('progress', detail);
     };
     
     my.setUpdateReady = function() {

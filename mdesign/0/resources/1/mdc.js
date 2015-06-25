@@ -4359,10 +4359,7 @@ var SpinningWheel = {
 				origin = scrollOrigin(me[0]);
 				
 				if (startPressed) {
-					// We come into this code on iOS as the user is scroll moving.
-					if( $.isIpad || $.isIphone ){
-                             isMoving = true;
-					}
+					isMoving = true;
 				}
 				
 				if (startOrigin.x === origin.x && startOrigin.y === origin.y && isTouchInside(e) === true) {
@@ -5535,18 +5532,21 @@ var SpinningWheel = {
 		// if (parent.hasClass('checkboxInline')) {
 			parent.find('input[type="checkbox"]').each(function () {
 				var li, me;
-				me = $(this);
-				me.bind('click', cancelEvent);
-				li = $(this.parentElement);
-				generateTaps(li);
-				li.bind($.ui.tapEvent, function (e) {
-					if (!$.ui.defaultPrevented(e)) {
-						e.preventDefault();
-						me[0].checked = !me[0].checked;
-						// me.trigger('change');
-						me.trigger('jmuiChange');
-					}
-				});
+				// If it's not an <li> tag, then it's going to be a toggle. We don't want toggles.
+				if (this.parentElement.tagName === 'LI') {
+				    me = $(this);
+				    me.bind('click', cancelEvent);
+				    li = $(this.parentElement);
+				    generateTaps(li);
+				    li.bind($.ui.tapEvent, function (e) {
+					    if (!$.ui.defaultPrevented(e)) {
+						    e.preventDefault();
+						    me[0].checked = !me[0].checked;
+						    // me.trigger('change');
+						    me.trigger('jmuiChange');
+					    }
+				    });
+				}
 			});
 		//}
 	}
@@ -7463,15 +7463,19 @@ mCapture = (function($) {
         }
     }
 
-    function ready(visualizing, width, height, processInfo) {
+    function ready(visualizing, width, height, processInfo, initCallback) {
         var keyboardTimeout;
         log.debug('IN mc.ready');
         setTimeout(function() {
             var currentPageId;
-            log.debug('IN DOM ready for ' + processInfo.id);
-            if (processInfo.useAnimation === false) {
-                $.hasAnimation = false;
-            }
+			if (processInfo) {
+				log.debug('IN DOM ready for ' + processInfo.id);
+				if (processInfo.useAnimation === false) {
+					$.hasAnimation = false;
+				}
+			} else {
+				log.debug('IN DOM ready for undefined process');
+			}
             $(window).bind('load', function() {
                 $(window).trigger('resize');
             });
@@ -7484,32 +7488,45 @@ mCapture = (function($) {
                 log.debug('IN DB ready');
                 log.debug('File System is ' + (mc.fs.available ? '' : 'not ') + 'available.');
                 log.debug('File System is ' + (mc.fs.availableForAtts ? '' : 'not ') + 'available for attachments.');
-                mc.q.ready(processInfo.questions);
-                currentPageId = currentPage();
-                initButtons();
-                initPages(processInfo.pages);
-                initBehaviours();
-				initCss();
-				userInfo = mc.db.getUserInfo();
-				if (userInfo && userInfo.mSuiteUserName !== "") {
-                    initNotifications(userInfo.mSuiteUserName);
-                }				
-                if (currentPageId) {
-                    page = $('#' + currentPageId);
-                    if (!page.hasClass('jmuiCurrent')) {
-                        $.ui.gotoPage(page);
+                
+                function initComplete() {
+					if (!processInfo) {
+						log.error('initComplete called for undefined process');
+						return;
+					}
+                    mc.q.ready(processInfo.questions);
+                    currentPageId = currentPage();
+                    initButtons();
+                    initPages(processInfo.pages);
+                    initBehaviours();
+				    initCss();
+				    userInfo = mc.db.getUserInfo();
+				    if (userInfo && userInfo.mSuiteUserName !== "") {
+                        initNotifications(userInfo.mSuiteUserName);
+                    }				
+                    if (currentPageId) {
+                        page = $('#' + currentPageId);
+                        if (!page.hasClass('jmuiCurrent')) {
+                            $.ui.gotoPage(page);
+                        }
+                    } else if (!$('.jmuiPage.jmuiCurrent').length) {
+                        $.ui.gotoPage($('.jmuiLayout.jmuiCurrent .jmuiPage'));
                     }
-                } else if (!$('.jmuiPage.jmuiCurrent').length) {
-                    $.ui.gotoPage($('.jmuiLayout.jmuiCurrent .jmuiPage'));
+                    mc.hideActivity(true);
+
+                    log.debug('Triggering mcready');
+                    $(document).trigger('mcready');
+
+                    log.debug('OUT DB ready');
+
+                    doStartupReplication();
+                }               
+
+                if (initCallback) {
+                    initCallback(initComplete);
+                } else {
+                    initComplete();
                 }
-                mc.hideActivity(true);
-
-                log.debug('Triggering mcready');
-                $(document).trigger('mcready');
-
-                log.debug('OUT DB ready');
-
-                doStartupReplication();
             };
 
             mc.db.ready(visualizing, processInfo, dbReady);
@@ -10738,6 +10755,9 @@ mCapture = (function($) {
                     callback();
                 }
             }
+			if (!processInfo) {
+				return callback();
+			}
             mc.db.createProcess(processInfo, function(process) {
                 function gotSubjectGuid(subjectGuid) {
                     mc.db.createSubject(processInfo.id, processInfo.version, subjectGuid, gotSubject);
@@ -11326,8 +11346,11 @@ mCapture = (function($) {
         }
         
         var process = getProcess();
-        var hasAttQs = process.dataIdMap[dataId].qIds
-            .map(function(qId) { return process.questions[qId]; })
+        var data = process.dataIdMap[dataId];
+        if (!data) {
+            throw Error('No item exists with id ' + dataId);
+        }
+        var hasAttQs = data.qIds.map(function(qId) { return process.questions[qId]; })
             .some(function(question) { return question && isMediaQuestion(question)});        
         if (hasAttQs) {
             var oldSingleValue = getSingleValue(subject[dataId]),
@@ -11577,6 +11600,29 @@ mCapture = (function($) {
                         log.debug('got file entry... ' + fileEntry.fullPath);
                         var filename = getAttachmentFilename(name);
                         fileEntry.moveTo(directory, filename, gotMovedFileEntry, errorCallback);
+                    }
+                    _resolveLocalFileSystemURL(fileUri, gotFileEntry, errorCallback);
+                }
+                getSubjectAttachmentsDirectory(fs, subjectGuid, true, gotDirectory, errorCallback);
+            },
+            errorCallback);
+    }
+    
+    /* exported */
+    function copyTemporaryFile(fileUri, subjectGuid, name, successCallback, errorCallback) {
+        getFileSystem(
+            function(fs) {
+                log.debug('copying temporary file...' + JSON.stringify([fileUri, subjectGuid, name]));
+                function gotDirectory(directory) {
+                    log.debug('got subject attachments directory... ' + directory.fullPath);
+                    function gotCopiedFileEntry(fileEntry) {
+                        log.debug('got copied file entry... ' + fileEntry.fullPath);
+                        successCallback(fileEntry.fullPath);
+                    }
+                    function gotFileEntry(fileEntry) {
+                        log.debug('got file entry... ' + fileEntry.fullPath);
+                        var filename = getAttachmentFilename(name);
+                        fileEntry.copyTo(directory, filename, gotCopiedFileEntry, errorCallback);
                     }
                     _resolveLocalFileSystemURL(fileUri, gotFileEntry, errorCallback);
                 }
@@ -12022,6 +12068,7 @@ mCapture = (function($) {
         availableForAtts: isAvailableForAtts(),
         getAttachmentPath: getAttachmentPath,
         moveTemporaryFile: moveTemporaryFile,
+        copyTemporaryFile: copyTemporaryFile,
         deleteAttachment: deleteAttachment,
         deleteAttachments: deleteAttachments,
         duplicateAttachment: duplicateAttachment,
@@ -12932,7 +12979,7 @@ mCapture = (function($) {
     * @param columnId
     *						optional string containing the grid question's dataId for row answers
     */
-    function getFileReference(callback, subjectGuid, dataId, index, columnId) {
+    function getFileReference(callback, subjectGuid, dataId, index, columnId, context) {
 
         function done(result) {
             if (callback.constructor === Function) {
@@ -12943,7 +12990,22 @@ mCapture = (function($) {
         }
 
         function onSuccess(path) {
-            done('#fileref:' + path);
+            /*
+            * Internal Draft Spec V2.4
+            * Internally, if the context is defined then the GetFileReference appends “#” 
+            * and the stringified version of context to the return value.
+            */
+            var contextString;
+            if (context === undefined) {
+                done('#fileref:' + path);
+            } else {
+                try {
+                    contextString = JSON.stringify(context);
+                } catch (e) {
+                    contextString = context.toString();
+                }
+                done('#fileref:' + path + '#' + contextString);
+            }
         }
 
         function onError(error) {
@@ -12959,7 +13021,7 @@ mCapture = (function($) {
             }
         }
 
-        validateArgs(arguments, "getFileReference", 3, 5, [null, String, String, Number, String]);
+        validateArgs(arguments, "getFileReference", 3, 6, [null, String, String, Number, String, null]);
         if (mc.fs.availableForAtts) {
             dskData(gotData, subjectGuid, dataId, index, columnId);
         } else {
@@ -13324,6 +13386,7 @@ mCapture = (function($) {
         log.info('canConnectAtLeast : ' + connectionType);
 
         if (typeof navigator.connection == 'undefined') {
+            log.info('canConnectAtLeast : navigator.connection undefined - returning online = ' + navigator.onLine);
             return navigator.onLine;
         }
 
@@ -13340,17 +13403,17 @@ mCapture = (function($) {
 
         if (Connection.CELL === undefined) {
 
-        if (connectionType == Connection.CELL_4G)
-            if (networkState == Connection.WIFI || networkState == Connection.CELL_4G)
-            return true;
+            if (connectionType == Connection.CELL_4G)
+                if (networkState == Connection.WIFI || networkState == Connection.CELL_4G)
+                return true;
 
-        if (connectionType == Connection.CELL_3G)
-            if (networkState == Connection.WIFI || networkState == Connection.CELL_4G || networkState == Connection.CELL_3G)
-            return true;
+            if (connectionType == Connection.CELL_3G)
+                if (networkState == Connection.WIFI || networkState == Connection.CELL_4G || networkState == Connection.CELL_3G)
+                return true;
 
-        if (connectionType == Connection.CELL_2G)
-            if (networkState == Connection.WIFI || networkState == Connection.CELL_4G || networkState == Connection.CELL_3G || networkState == Connection.CELL_2G)
-            return true;
+            if (connectionType == Connection.CELL_2G)
+                if (networkState == Connection.WIFI || networkState == Connection.CELL_4G || networkState == Connection.CELL_3G || networkState == Connection.CELL_2G)
+                return true;
 
         } else {
             //CELL: "cellular", is available in cordova, but only seems to be used by WP8 which doesnt know what level it is
@@ -13364,11 +13427,11 @@ mCapture = (function($) {
 
             if (connectionType == Connection.CELL_2G)
                 if (networkState == Connection.WIFI || networkState == Connection.CELL_4G || networkState == Connection.CELL_3G || networkState == Connection.CELL_2G || networkState == Connection.CELL)
-                    return true;
-                
+                return true;
+
             if (connectionType == Connection.CELL)
                 if (networkState == Connection.WIFI || networkState == Connection.CELL_4G || networkState == Connection.CELL_3G || networkState == Connection.CELL_2G || networkState == Connection.CELL)
-                    return true;
+                return true;
         }
 
         log.info('canConnectAtLeast : no');
@@ -13387,27 +13450,27 @@ mCapture = (function($) {
         var url, finished;
 
         function success() {
-			if( !finished ) {				
-				finished = true;				
-            if (typeof (callback) == "function")
-                callback(true);
-            else
-                callback.resume(true);
-        }
+            if (!finished) {
+                finished = true;
+                if (typeof (callback) == "function")
+                    callback(true);
+                else
+                    callback.resume(true);
+            }
         }
 
         function error() {
-			if( !finished ) {				
-				finished = true;				
-            if (typeof (callback) == "function")
-                callback(false);
-            else
-                callback.resume(false);
+            if (!finished) {
+                finished = true;
+                if (typeof (callback) == "function")
+                    callback(false);
+                else
+                    callback.resume(false);
+            }
         }
-        }
-        
+
         function connect(serverUrl) {
-		
+
             if (timeout === undefined) {
                 timeout = 5000;
             }
@@ -13418,18 +13481,18 @@ mCapture = (function($) {
                 url = "/mdesign/0/iphone-shell/settings.plist";
             }
 
-			jQuery.ajax({
-				url: url,
-				timeout: timeout
-			}).done(function() {
-				success();
-			}).fail(function() {
-				error();
-			});
+            jQuery.ajax({
+                url: url,
+                timeout: timeout
+            }).done(function() {
+                success();
+            }).fail(function() {
+                error();
+            });
         }
-        
-		finished = false;
-		
+
+        finished = false;
+
         if (!canConnectAtLeast('2g')) {
             error();
         } else {
@@ -14476,7 +14539,7 @@ mCapture = (function($) {
             } else if (units === 'weeks') {
                 result = d1.getWeekOfYear();
             } else if (units === 'months') {
-                result = d1.getUTCMonth;
+                result = d1.getUTCMonth();
             } else if (units === 'years') {
                 result = d1.getUTCFullYear();
             } else {
@@ -14553,7 +14616,7 @@ mCapture = (function($) {
     *
     * @return true/false
     */
-    function deleteLogFiles(callback ) {
+    function deleteLogFiles(callback) {
         var fail, success;
         success = function() {
             callback.resume(true);
@@ -14573,7 +14636,7 @@ mCapture = (function($) {
             fail('deleteLogFiles Not available in Restricted Client');
         }
     }
-    
+
     /**
     * Delete the subject with the supplied guid.
     *
@@ -14660,17 +14723,27 @@ mCapture = (function($) {
     function dataProviderRequest(callback, provider, channel, subchannel, method, data, ttlHours, notifyResponse) {
         validateArgs(arguments, 'dataProviderRequest', 6, 8, [null, String, String, String, String, null, Number, Boolean]);
 
+        var content = {};
+        content.data = data;
+
         var pushMessage = {};
 
         switch (provider) {
             case "DataRequest":
                 {
                     pushMessage.provider = provider;
+                    content.method = method;
                     break;
                 }
             case "ZumoRequest":
                 {
                     pushMessage.provider = 'zumo';
+                    content.transport = {};
+                    content.transport.type = 'zumoDirect';
+                    content.transport.httpMethod = 'POST';
+                    content.transport.api = method;
+                    content.options = {};
+
                     break;
                 }
             default:
@@ -14690,15 +14763,12 @@ mCapture = (function($) {
         pushMessage.subchannel = notifyResponse ? subchannel : 'ignoreResponse';
         pushMessage.expiry = ttlHours === 0 ? 0 : then.getTime();
 
-        var content = {};
-        content.method = method;
-        content.data = data;
 
         pushMessage.content = content;
 
         mc.notify.service.sendMessage(pushMessage, function(error, messageId) {
             log.info("mc.fl.dataProviderRequest: " + provider + " message posted, id: " + messageId);
-            callback.resume({ error: error, id: messageId});
+            callback.resume({ error: error, id: messageId });
         });
     }
 
@@ -14706,14 +14776,23 @@ mCapture = (function($) {
     /**
     * Calls into the shell to remove zumo credentials
     * 
-	*/
-	function zumoClearToken() {
-		plugins.authenticator.clearZumoCredentials(function() {
-			log.info("mc.fl.zumoClearToken: Zumo credentials clear has been requested");
-		}, function(error) {
-			log.info("mc.fl.zumoClearToken: Zumo credentials clear has failed: " + error);
-		});
-	}
+    */
+    function zumoClearToken(callback) {
+        //cope with differeces between platform cordova versions
+        var authenticator = plugins.authenticator;
+        if (authenticator === undefined) authenticator = plugins.authenticate;
+        try {
+            authenticator.clearZumoCredentials(function() {
+                log.info("mc.fl.zumoClearToken: Zumo credentials clear has been requested");
+				callback.resume();
+            }, function(error) {
+                log.info("mc.fl.zumoClearToken: Zumo credentials clear has failed: " + error);
+				callback.resume();
+            });
+        } catch (error) {
+            log.error("mc.fl.zumoClearToken: Zumo credentials clear has errored: " + error);
+        }
+    }
 
     /**
     * Returns the persistent value of the answer of the supplied question.
@@ -14953,11 +15032,11 @@ mCapture = (function($) {
                 var dataId = getDataId();
                 newValue = createNewValue(dataId);
                 if (!cacheOnly) {
-                    mc.db.valueChanging(subject, dataId, newValue, index, function () {
+                    mc.db.valueChanging(subject, dataId, newValue, index, function() {
                         subject[dataId] = newValue;
-                    mc.db.setSubject(subjectId, subject, true, function(e) {
-                        callback.resume(e);
-                    });
+                        mc.db.setSubject(subjectId, subject, true, function(e) {
+                            callback.resume(e);
+                        });
                     });
                 } else {
                     subject[dataId] = newValue;
@@ -15003,11 +15082,11 @@ mCapture = (function($) {
             try {
                 var newValue = createNewValue(dataId);
                 if (!cacheOnly) {
-                    mc.db.valueChanging(subject, dataId, newValue, index, function () {
+                    mc.db.valueChanging(subject, dataId, newValue, index, function() {
                         subject[dataId] = newValue;
-                    mc.db.setSubject(subjectId, subject, true, function(e) {
-                        callback.resume(e);
-                    });
+                        mc.db.setSubject(subjectId, subject, true, function(e) {
+                            callback.resume(e);
+                        });
                     });
                 } else {
                     subject[dataId] = newValue;
@@ -15458,19 +15537,19 @@ mCapture = (function($) {
     function getUserName() {
         return mc.db.getUserInfo().mSuiteUserName || '';
     }
-	
-	/**
+
+    /**
     * Get the android service user name
     *
     * @return	String containing the service user name
     */
-    function getServiceUserName(callback, service) {            
-        
-		function fail(e) {
-			log.error("getServiceUsername failed: " + e);
-		}
-		
-		function success() {
+    function getServiceUserName(callback, service) {
+
+        function fail(e) {
+            log.error("getServiceUsername failed: " + e);
+        }
+
+        function success() {
             if (typeof (callback) === "function") {
                 callback();
             } else if (typeof (callback["resume"]) === "function") {
@@ -15479,9 +15558,9 @@ mCapture = (function($) {
                 log.error("Unable to exit from getServiceUserName: invalid callback");
             }
         }
-		
-		validateArgs(arguments, "getserviceusername", 2, 2, [null, String]);
-        plugins.settings.getServiceUsername(success, fail, service);   
+
+        validateArgs(arguments, "getserviceusername", 2, 2, [null, String]);
+        plugins.settings.getServiceUsername(success, fail, service);
     }
 
     /**
@@ -15964,11 +16043,11 @@ mCapture = (function($) {
                 });
                 process = mc.db.getProcess(processName);
                 dataId = process.pages[pageId].qIdMap[quesitonId];
-                mc.db.valueChanging(subject, dataId, value, undefined, function () {
-                subject[dataId] = value;
-                mc.db.setSubject(guid, subject, false, function(e) {
+                mc.db.valueChanging(subject, dataId, value, undefined, function() {
+                    subject[dataId] = value;
+                    mc.db.setSubject(guid, subject, false, function(e) {
                         callback.resume(e);
-                });
+                    });
                 });
             } catch (e) {
                 callback.resume(false);
@@ -16097,7 +16176,7 @@ mCapture = (function($) {
     *					String containing the page id to save
     */
     function newCurrentPageOnClose(pageId) {
-        validateArgs(arguments, 'element', 1, 1, [String]);
+        validateArgs(arguments, 'newCurrentPageOnClose', 1, 1, [String]);
         mc.currentPage(pageId);
         setSubjectValue(undefined, 'pageStack', [], true);
     }
@@ -16172,11 +16251,11 @@ mCapture = (function($) {
         validateArgs(arguments, "notifyDeleteMessage", 2, 2, [null, String]);
         log.debug("notifyDeleteMessage - msgid: " + messageId);
         mc.notify.service.deleteMessage(messageId, function(error, id) {
-			if (error) {
-				log.debug("notifyDeleteMessage - msgid: " + id + " error: " + error );
-			} else {
-				log.debug("notifyDeleteMessage - msgid: " + id + " deleted");
-			}
+            if (error) {
+                log.debug("notifyDeleteMessage - msgid: " + id + " error: " + error);
+            } else {
+                log.debug("notifyDeleteMessage - msgid: " + id + " deleted");
+            }
             callback.resume(error ? { message: error} : id);
         });
     }
@@ -16200,11 +16279,11 @@ mCapture = (function($) {
         validateArgs(arguments, "notifyGetMessages", 3, 3, [null, String, String]);
         log.debug("notifyGetMessages - channel: " + channel + " subchannel: " + subchannel);
         mc.notify.service.getMessages(channel, subchannel, function(error, messages) {
-			if (error) {
-				log.debug("notifyGetMessages - channel: " + channel + " subchannel: " + subchannel + " error: " + error );
-			} else {
-				log.debug("notifyGetMessages - channel: " + channel + " subchannel: " + subchannel + " count: " + messages.length);
-			}
+            if (error) {
+                log.debug("notifyGetMessages - channel: " + channel + " subchannel: " + subchannel + " error: " + error);
+            } else {
+                log.debug("notifyGetMessages - channel: " + channel + " subchannel: " + subchannel + " count: " + messages.length);
+            }
             callback.resume(error ? { message: error} : messages);
         });
     }
@@ -16236,11 +16315,11 @@ mCapture = (function($) {
         }
         log.debug("notifyGetUnreadMessages - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel);
         mc.notify.service.getUnreadMessages(receiver, channel, subchannel, function(error, messages) {
-			if (error) {
-				log.debug("notifyGetUnreadMessages - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " error: " + error );
-			} else {
-				log.debug("notifyGetUnreadMessages - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " count: " + messages.length);
-			}
+            if (error) {
+                log.debug("notifyGetUnreadMessages - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " error: " + error);
+            } else {
+                log.debug("notifyGetUnreadMessages - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " count: " + messages.length);
+            }
             callback.resume(error ? { message: error} : messages);
         });
     }
@@ -16272,11 +16351,11 @@ mCapture = (function($) {
         }
         log.debug("notifyGetUnreadMessageCount - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel);
         mc.notify.service.getUnreadMessages(receiver, channel, subchannel, function(error, messages) {
-			if (error) {
-				log.debug("notifyGetUnreadMessageCount - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " error: " + error );
-			} else {
-				log.debug("notifyGetUnreadMessageCount - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " count: " + messages.length);
-			}
+            if (error) {
+                log.debug("notifyGetUnreadMessageCount - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " error: " + error);
+            } else {
+                log.debug("notifyGetUnreadMessageCount - rcv: " + receiver + " channel: " + channel + " subchannel: " + subchannel + " count: " + messages.length);
+            }
             callback.resume(error ? { message: error} : messages.length);
         });
     }
@@ -16313,16 +16392,16 @@ mCapture = (function($) {
     *					supplied, mc.db.getUserInfo().mSuiteUserName will be used instead.
     */
     function notifyMessageReceived(callback, messageId, receiver) {
-		var receivedOn = receiver;
+        var receivedOn = receiver;
         log.debug("notifyMessageReceived - rec: " + receiver + " id: " + messageId);
         validateArgs(arguments, "notifyMessageReceived", 2, 3, [null, String, String]);
         if (!receiver) {
-			userInfo = mc.db.getUserInfo();
+            userInfo = mc.db.getUserInfo();
             receivedOn = userInfo.mSuiteUserName;
         }
         log.debug("notifyMessageReceived - by: " + receivedOn + " id: " + messageId);
         mc.notify.service.messageReceivedAck(receivedOn, messageId, function(error) {
-			mc.refreshNotificationIndicator();
+            mc.refreshNotificationIndicator();
             callback.resume(error ? { message: error} : undefined);
         });
     }
@@ -16367,14 +16446,14 @@ mCapture = (function($) {
             log.debug('message = ' + JSON.stringify(message));
             function markAsRead(result) {
                 log.debug("notifyReceiveMessageNotification - rec: " + receiver + " channel: " + channel + " sub: " + subchannel + " id: " + message.id + " call: " + formulaName + " result: " + result);
-				if (result === 'success') {
-					try {
-						mc.notify.service.messageReceivedAck(receiver, message.id);
-						mc.refreshNotificationIndicator();
-					} catch (e) {
-						log.error("notifyReceiveMessageNotificationAck - rec: " + receiver + " channel: " + channel + " sub: " + subchannel + " id: " + message.id + " call: " + formulaName + " error: " + e);
-					}
-				}
+                if (result === 'success') {
+                    try {
+                        mc.notify.service.messageReceivedAck(receiver, message.id);
+                        mc.refreshNotificationIndicator();
+                    } catch (e) {
+                        log.error("notifyReceiveMessageNotificationAck - rec: " + receiver + " channel: " + channel + " sub: " + subchannel + " id: " + message.id + " call: " + formulaName + " error: " + e);
+                    }
+                }
             }
             function success() {
                 markAsRead("success");
@@ -16859,11 +16938,11 @@ mCapture = (function($) {
             $('.jmuiLayout.jmuiCurrent .jmuiPage.jmuiCurrent').bind('jmuiPageAnimationEnd', function(e) {
                 inRefreshCurrentPage = false;
             });
-        $('.jmuiLayout.jmuiCurrent .jmuiPage.jmuiCurrent').removeAttr('rowindex');
-        $('.jmuiLayout.jmuiCurrent .jmuiPage.jmuiCurrent')
+            $('.jmuiLayout.jmuiCurrent .jmuiPage.jmuiCurrent').removeAttr('rowindex');
+            $('.jmuiLayout.jmuiCurrent .jmuiPage.jmuiCurrent')
 			.trigger('jmuiPageAnimationStart', { direction: 'in' })
 			.trigger('jmuiPageAnimationEnd', { direction: 'in' });
-    }
+        }
     }
 
     /**
@@ -17009,7 +17088,7 @@ mCapture = (function($) {
             if (successMessage) {
                 alert(successMessage);
             }
-            callback.resume(data);            
+            callback.resume(data);
         };
         fail = function(message) {
             if (failMessage) {
@@ -17083,6 +17162,34 @@ mCapture = (function($) {
         }
     }
 
+	/**
+    * Sets the persistent current page id in the current subject.
+	* This is like newCurrentPageOnClose except this is asyncronous
+	* and so waits for completion of the database operation.
+    *
+	* @param	callback
+    *					Object to perform asynchronous formula callbacks
+    * @param	pageId
+    *					String containing the page id to save
+    * @param	clearStack
+    *					Optional boolean (default true). Indicates whether
+	*                   the page stack should be cleared.
+    */
+    function setReturnPage(callback,pageId,clearStack) {
+        validateArgs(arguments, 'setReturnPage', 2, 3, [null, String, Boolean]);
+        mc.currentPage(pageId);
+		if (clearStack === undefined) {
+			clearStack = true;
+		}
+		mc.db.setMetaValue('currentPageId', pageId, true, function() {
+			if (clearStack) {
+				setSubjectValue(callback, 'pageStack', [], true);
+			} else {
+				callback.resume();
+			}
+		});
+    }
+	
     /**
     * Sets the text in the title bar of the current page
     *
@@ -17198,7 +17305,7 @@ mCapture = (function($) {
             fail('GPS Heartbeat Not available in Restricted Client');
         }
     }
-    
+
     /**
     * Initiate a geofence scan
     *
@@ -17272,7 +17379,7 @@ mCapture = (function($) {
             fail('GPS Heartbeat Not available in Restricted Client');
         }
     }
-    
+
     /**
     * cancel a geofence scan
     *
@@ -17297,7 +17404,7 @@ mCapture = (function($) {
         if (navigator.hasOwnProperty('location')) {
             navigator.location.stopMonitoringRegion(identifier, success, fail);
         } else if (window.plugins.location !== undefined) {
-        window.plugins.location.stopMonitoringRegion(identifier, success, fail);
+            window.plugins.location.stopMonitoringRegion(identifier, success, fail);
         } else {
             fail('Geofence Not available in Restricted Client');
         }
@@ -17652,12 +17759,12 @@ mCapture = (function($) {
         if (navigator.hasOwnProperty('statusUpdater')) {
             navigator.statusUpdater.setOptions(options, success, fail);
         } else if (window.plugins.location !== undefined) {
-        window.plugins.statusUpdater.setOptions(options, success, fail);
+            window.plugins.statusUpdater.setOptions(options, success, fail);
         } else {
             fail('GPS Heartbeat Not available in Restricted Client');
         }
     }
-    
+
     // Ideally this function will be overriden by the running process
     function defaultPostNotification($$result) {
         switch (this.state) {
@@ -17833,7 +17940,7 @@ mCapture = (function($) {
         var jSigjQ = jQuery('ul[dataid="' + dataid + '"] div.jsig');
         var canvas = jQuery('ul[dataid="' + dataid + '"] div.jsig canvas')[0];
         if (jSigjQ) {
-            if(canvas) canvas.width = canvas.width;
+            if (canvas) canvas.width = canvas.width;
             jSigjQ.jSignature("reset");
         }
         clearData(dataid);
@@ -17881,10 +17988,15 @@ mCapture = (function($) {
         validateArgs(arguments, "saveSettings", 2, 2, [null, null]);
         // Apply padding so data is not JSON parsable (WP8 Cordova bug)
         var content = '@@' + JSON.stringify(data);
-        if (mc.fs.available) {
-            mc.fs.saveUserData('settings', content, onSuccess, onError);
+
+        if (device && device.platform && device.platform === 'Android') {
+            plugins.settings.setUserPreference('userPrefs', content, onSuccess, onError);
         } else {
-            onError();
+            if (mc.fs.available) {
+                mc.fs.saveUserData('settings', content, onSuccess, onError);
+            } else {
+                onError();
+            }
         }
     }
 
@@ -17906,10 +18018,15 @@ mCapture = (function($) {
             done(JSON.parse(data));
         }
         validateArgs(arguments, "readSettings", 1, 1, [null]);
-        if (mc.fs.available) {
-            mc.fs.readUserData('settings', onSuccess, onError);
+
+        if (device && device.platform && device.platform === 'Android') {
+            plugins.settings.getUserPreference('userPrefs', onSuccess, onError);
         } else {
-            onError();
+            if (mc.fs.available) {
+                mc.fs.readUserData('settings', onSuccess, onError);
+            } else {
+                onError();
+            }
         }
     }
 
@@ -18022,7 +18139,7 @@ mCapture = (function($) {
         getplatform: getPlatform,
         getparentsubject: getParentSubject,
         getselectedrows: getSelectedRows,
-		getserviceusername: getServiceUserName,
+        getserviceusername: getServiceUserName,
         getsignatureimagedata: getSignatureImageData,
         //        getstatusbartext: getStatusBarText,
         getsubjectguid: getSubjectGuid,
@@ -18131,6 +18248,7 @@ mCapture = (function($) {
         setenvironment: setEnvironment,
         setfocus: setFocus,
         setgpsheartbeatoptions: setGpsHeartBeatOptions,
+		setreturnpage: setReturnPage,
         enablelogging: enableLogging,
         disablelogging: disableLogging,
         setobjectvalue: setObjectValue,
@@ -18160,7 +18278,8 @@ mCapture = (function($) {
         uppercase: upperCase,
         viewdocument: viewDocument,
         viewdocumentdirect: viewDocumentDirect,
-        zumorequest: zumoRequest
+        zumorequest: zumoRequest,
+        zumocleartoken: zumoClearToken
     };
 } (window.jmfw, window.mCapture));
 /*
@@ -18412,11 +18531,11 @@ mCapture = (function($) {
             return mc.db.setValue(getDataId(), v, row, stamp, callback);
         }
 
-        function getValue(callback, ignoreDefault) {
+        function getValue(callback, ignoreDefault, dontSaveDefault) {
             var value = mc.db.getValue(getDataId(), row);
             if (value === undefined && ignoreDefault !== true) {
                 getDefaultValue(function(value) {
-                    if (value !== undefined) {
+                    if (!dontSaveDefault && value !== undefined) {
                         setValue(value, function() {
                             callback(value, true);
                         });
@@ -20190,7 +20309,11 @@ mCapture = (function($) {
                         }
                         subject_guid = mc.db.getCurrentSubjectGuid();
                         log.debug('ATT: move temp file for subject: ' + subject_guid + ' attachment : ' + value);
-                        mc.fs.moveTemporaryFile(fileUri, subject_guid, value, fileMoved, fileNotMoved);
+                        if (options.sourceType === navigator.camera.PictureSourceType.CAMERA) {
+                            mc.fs.moveTemporaryFile(fileUri, subject_guid, value, fileMoved, fileNotMoved);
+                        } else {
+                            mc.fs.copyTemporaryFile(fileUri, subject_guid, value, fileMoved, fileNotMoved);
+                        }
                     }
                     if (save && save.constructor === Function) {
                         log.debug('ATT: Saving...');
@@ -20735,13 +20858,17 @@ mCapture = (function($) {
                 }
                 if (!q.attr('disabled')) {
                     question.getCalculatedValue(function(value) {
-                        function gotValue(value) {
+                        function gotValue(value, defaultLoaded) {
                             value = value || '';
                             switch (question.getType()) {
                                 case 'att':
-                                    mc.att.getAttachment(mc.db.getCurrentSubjectGuid(), value, function(data) {
-                                        image.attr('src', data);
-                                    });
+                                    if (defaultLoaded) {
+                                        image.attr('src', value);
+                                    } else {
+                                        mc.att.getAttachment(mc.db.getCurrentSubjectGuid(), value, function(data) {
+                                            image.attr('src', data);
+                                        });
+                                    }
                                     break;
                                 //case 'url':                    
                                 default:
@@ -20753,7 +20880,7 @@ mCapture = (function($) {
                             $.ui.gotoPage(editPage, 'jmuiSlide', false, true);
                         }
                         if (value === undefined || value === null) {
-                            question.getValue(gotValue);
+                            question.getValue(gotValue, false, true);
                         } else {
                             gotValue(value);
                         }
@@ -20944,22 +21071,25 @@ mCapture = (function($) {
         function bindEditPhoto(question) {
             var dirty, editPage, page, q;
 
-            function deleteCallback() {
-                dirty = 'delete';
-            }
-
-            function saveCallback() {
-                dirty = 'save';
-            }
             page = question.getPageObject();
             editPage = popupPage($($.ui.parentColumn(page[0])), 'editPhotoPage',question);
             q = question.getQuestionObject();
             $.ui.generateTaps(q);
             q.bind($.ui.tapEvent, function() {
-                var cachedValue, goBack, li;
+                var cachedValue, newValue, goBack, li;
+                
+                function deleteCallback(callback) {
+                    dirty = 'delete';
+                }
 
+                function saveCallback(callback) {
+                    dirty = 'save';
+                    newValue = newValue || mc.db.guid();
+                    callback(newValue);
+                }
+                
                 function actionButtonClick(e) {
-                    var guid;
+                
                     if (!$.ui.defaultPrevented(e)) {
                         if (dirty) {
                             e.preventDefault();
@@ -20979,11 +21109,11 @@ mCapture = (function($) {
                                     goBack();
                                 }
                             } else {
-                                guid = cachedValue || mc.db.guid();
-                                mc.db.setAttachment(mc.db.getCurrentSubjectGuid(), guid, li.find('img').attr('src'), true, function(e) {
-                                    if (!e && !cachedValue) {
-                                        cachedValue = guid;
-                                        question.setValue(cachedValue);
+                                mc.att.setAttachment(mc.db.getCurrentSubjectGuid(), newValue, li.find('img').attr('src'), true, function(e) {
+                                    if (!e && newValue) {
+                                        question.setValue(newValue);
+                                        cachedValue = newValue;
+                                        newValue = undefined;
                                         q.find('h4').text('<answered>');
                                         question.valueChanged();
                                         goBack();
@@ -20999,12 +21129,25 @@ mCapture = (function($) {
                     }
                 }
                 goBack = function() {
-                    dirty = undefined;
-                    editPage.find('.jmuiCancelButton').unbind($.ui.tapEvent, goBack);
-                    editPage.find('.jmuiActionButton').unbind($.ui.tapEvent, actionButtonClick);
-                    li.unbind($.ui.tapEvent, li._tapHandler);
-                    li.unbind($.ui.tapAndHoldEvent, li._tapAndHoldHandler);
-                    $.ui.gotoPage(page, 'jmuiSlide', true, true);
+                    
+                    function goBackEnd() {
+                        dirty = undefined;
+                        editPage.find('.jmuiCancelButton').unbind($.ui.tapEvent, goBack);
+                        editPage.find('.jmuiActionButton').unbind($.ui.tapEvent, actionButtonClick);
+                        li.unbind($.ui.tapEvent, li._tapHandler);
+                        li.unbind($.ui.tapAndHoldEvent, li._tapAndHoldHandler);
+                        $.ui.gotoPage(page, 'jmuiSlide', true, true);
+                    }
+                    
+                    // cleans up in case of cancel or delete
+                    if (newValue) {
+                        mc.db.deleteAttachment(mc.db.getCurrentSubjectGuid(), newValue, function(e) {
+                            newValue = undefined;
+                            goBackEnd();
+                        });
+                    } else {
+                        goBackEnd();
+                    }                    
                 };
                 if (!q.attr('disabled')) {
                     li = editPage.find('li');
@@ -21366,6 +21509,11 @@ mCapture = (function($) {
                         editor = editPage.find('ul');
                         editor.empty();
                         editor.html(html);
+                        
+                        editor.find('input').each(function (index, element) {
+                            var init = new Switchery(element, {size: 'small'});
+                        });
+                        
                         editPage.find('h2').text(q.find('h3').text());
                         editPage.find('.jmuiActionButton').bind($.ui.tapEvent, actionButtonClick);
                         editPage.find('.jmuiCancelButton').bind($.ui.tapEvent, goBack);
@@ -21387,6 +21535,7 @@ mCapture = (function($) {
                     createActionListRows(that, spec.question);
                 }
                 superLoad(callback);
+				
             }
             that = inlineQuestion(spec);
             superInitialize = that.initialize;
@@ -22040,7 +22189,7 @@ mCapture = (function($) {
                         if (value === undefined || value === null) {
                             that.getValue(function(value, defaultLoaded) {
                                 gotValue(value || '', defaultLoaded);
-                            });
+                            }, false, true);
                         } else {
                             gotValue(value, false);
                         }
@@ -23608,8 +23757,14 @@ mCapture = (function($) {
             var superInitialize, superLoad, that;
 
             function load() {
-                function callback() {
-                    that.getValue(function(value) {
+                function callback() {			
+                    that.getValue(function(value) {		
+					    function setChecked(checkbox, checked) {
+						    if (checkbox.checked !== checked) {
+							    checkbox.checked = checked;
+								$(checkbox).trigger('change');
+						    }
+					    }			
                         if (Object.prototype.toString.call(value) === '[object Array]' && value.length !== 0) {
                             spec.question.find('input').each(function() {
                                 var checked, i, myValue;
@@ -23621,11 +23776,11 @@ mCapture = (function($) {
                                         break;
                                     }
                                 }
-                                this.checked = checked;
+                                setChecked(this, checked);
                             });
                         } else {
                             spec.question.find('input').each(function() {
-                                this.checked = false;
+                                setChecked(this, false);
                             });
                         }
                     });
@@ -23634,6 +23789,10 @@ mCapture = (function($) {
             }
 
             function save() {
+                /*
+				
+				AnS: 12-MAY-15: 				Unreachable code as of switchery implementation
+				
                 var value;
                 if (that.ready()) {
                     value = [];
@@ -23644,6 +23803,7 @@ mCapture = (function($) {
                     });
                     that.setValue(value);
                 }
+				*/
             }
 
             function initialize() {
@@ -23656,7 +23816,26 @@ mCapture = (function($) {
                         html += '<li><span class="jmuiToggleText">' + choices[i].label + '</span><span class="jmuiToggle"><input type="checkbox" value="' + choices[i].value + '" /></span></li>';
                     }
                     spec.question.html(html);
-                    spec.question.find('input').bind('jmuiChange', save);
+                    spec.question.find('input')
+                        .bind('jmuiChange', save) // <--- this doesn't work with switchery
+                        .each(function (index, element) {
+                            var init = new Switchery(element, {size: 'small'});
+				
+							/*--- To cater for the broken save function - being able to set data to subject and also refresh hidden for a toggle check box */
+							var dataid = jQuery(element).closest('ul').attr('dataid');
+							var value = jQuery(element).val();
+							
+							jQuery(element).next("span").click(function(){
+								if(jQuery(this).siblings('input').is(':checked')){
+									mCapture.fl.setdata(dataid,value,index);
+								}else{
+									mCapture.fl.cleardata(dataid,index);
+								}
+								mCapture.fl.refreshhidden();
+							});
+							/*---*/
+                        });
+					
                     that.ready(true);
                 }
                 superInitialize();
@@ -26737,7 +26916,10 @@ function makeBinary(data, omitLength) {
         _have_restarted = true;
     }
     function _authenticate(callback) {
-        var fail, success;
+        var fail, success, authenticator;
+        authenticator = plugins.authenticator;
+        if (authenticator === undefined) authenticator = plugins.authenticate;
+        
         success = function() {
             log.debug("authentication success -> _restart_replication()");
             callback(true);
@@ -26752,7 +26934,7 @@ function makeBinary(data, omitLength) {
         };
         try {
             log.warn("Using shell authenticator.auth");
-            window.plugins.authenticator.auth(success, fail);
+            authenticator.auth(success, fail);
         } catch (e) {
             log.error("authentication error : " + e);
             if (callback) {

@@ -136,7 +136,7 @@
 				return 'Android';     		
 			}
 			function getPpaVersion() {
-				return '607a2155-6a08-4e37-b243-08860850a9f7'; 
+				return '82bb93a7-2d45-40cc-875c-f51c7c93bec1'; 
 			}
 			function isUnrestricted() {
 				var x_deviceClient = 'unrestricted';
@@ -144,7 +144,8 @@
 			}
 			my.getDeviceType = getDeviceType;
 			my.getPpaVersion = getPpaVersion;
-			my.isUnrestricted = isUnrestricted; 		
+			my.isUnrestricted = isUnrestricted; 
+			my.appType = 'ppa';
 			return my;
 		}());
 		</script><style type="text/css">
@@ -213,8 +214,7 @@
 		</script><script type="text/javascript">
 		window.mdesignshell = true;
 		</script>
-
-		<!--
+		
 		<script type="text/javascript" src="../resources/1/clientappcache.js"></script>
 	<script type="text/javascript">
 					document.addEventListener( "DOMContentLoaded", function() {
@@ -229,8 +229,6 @@
 					}, false);
 				</script>
 		<script type="text/javascript" src="../resources/1/appcache.js"></script>
-		-->
-
 	<script type="text/javascript" src="./switch.js"></script>
 		<script type="text/javascript">
         window.localStorage.shellType = 'phonegap';

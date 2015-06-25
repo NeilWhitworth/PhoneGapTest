@@ -837,55 +837,6 @@ div.buttonExtra.head.right {
   padding-top: 5px;
   background-color: white;
 }
-/*Toggle Control*/
-
-.jmuiToggle input[type="radio"],
-.jmuiToggle input[type="checkbox"] {
-  display: inline-block;
-  background-image: url(img/on_off_md7.png) !important;
-  background-position: -45px 0 !important;
-  -webkit-transition: background-position 0.2s ease !important;
-  -moz-transition: background-position 0.2s ease !important;
-  -o-transition: background-position 0.2s ease !important;
-  transition: background-position 0.2s ease !important;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-background-clip: padding-box;
-  -moz-background-clip: padding;
-  background-clip: padding-box;
-  border: 1px solid #e1e0e3 !important;
-  width: 94px !important;
-  height: 27px !important;
-  top: 0 !important;
-  left: 0 !important;
-}
-.jmuiToggle input[type="radio"]:checked,
-.jmuiToggle input[type="checkbox"]:checked {
-  background-color: #2880e1;
-  background-position: 2px 0 !important;
-  border-color: #2880e1 !important;
-}
-.jmuiToggle input[type="radio"]:after,
-.jmuiToggle input[type="checkbox"]:after {
-  content: "OFF";
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  left: 50px;
-  position: absolute;
-  top: 4px;
-  font-size: 14px;
-  color: #e1e0e3;
-  -webkit-transition: color 0.2s ease;
-  -moz-transition: color 0.2s ease;
-  -o-transition: color 0.2s ease;
-  transition: color 0.2s ease;
-}
-.jmuiToggle input[type="radio"]:checked:after,
-.jmuiToggle input[type="checkbox"]:checked:after {
-  content: "ON";
-  left: 8px;
-  color: white;
-}
 /* Form Inputs */
 
 .jmuiLayout ul li input[type="text"],

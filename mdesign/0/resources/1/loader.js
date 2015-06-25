@@ -4,6 +4,8 @@
 // Requires document.querySelector() 
 // 
 
+debugger;
+
 (function() { 
 	//debugger;
 	//alert('loader.js');
@@ -300,14 +302,21 @@
 		}
     } else {
 		logmessage('Already Loaded');
-        allowSleep(showLaunchPage);
+		setTimeout(function() {	
+			allowSleep(showLaunchPage);
+		}, 1000);  
     }
     // Navigate to app home after cache operation complete (unless showing diags)
 	function showLaunchPage() {
+		debugger;
 	    checkPPAVersion();
 		logmessage('loader.js.showLaunchPage cache status = ' + cache.status);
 		logmessage('Switching to process launch page');
-        window.location.href = 'launch/0/launch.html';
+		if( window.MCEX.appType === "bootstrap" ) {
+			window.location.href = 'launch/0/bootstrap-done.html';
+		} else {
+			window.location.href = 'launch/0/launch.html';
+		}
 	} 
 	// If a ppa version identifier is present, compare it to the stored version.
 	// A mismatch means that we want to reprovision the processes when we hit launch.
@@ -570,12 +579,14 @@
 
     function progressEventListener(e) 
     { 		
+    	debugger;
 		logmessage('loader.js.progressEventListener cache status = ' + cache.status);
 		logmessage('progressEventListener');
 //		loginfo(e);
 		resetCacheOpTimeout();
         downloadCount = downloadCount + 1;
-        setProgressComplete(downloadCount * 100 / sessionStorage.fileCount);
+        // setProgressComplete(downloadCount * 100 / sessionStorage.fileCount);
+        setProgressComplete(e.data);
         updateStatus();
         return true; 
     } 

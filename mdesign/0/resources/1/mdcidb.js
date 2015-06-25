@@ -436,7 +436,7 @@
 	*/
 	function createDb(success, error) {
         log.debug('IN mc.IDB.createDb');
-		var request, setVersionRequest, version = 19, o = { delay: '' };
+		var request, setVersionRequest, version = 19, o = { delay: '' }, upgraded = false;
 		function exit(e) {
 			log.debug('IN mc.IDB.createDb.exit : ' + JSON.stringify(e));
 			if (e) {
@@ -516,44 +516,34 @@
 				index = store.createIndex('subjectGuid', 'subjectGuid', { unique: false });
 				index = store.createIndex('name', 'name', { unique: false });
 			}
-			reopenDb(db);
 		}
+		
 		if (db) {
 			reopenDb(db);
+		} else {
+		    log.debug('mc.IDB.createDb : open database');
+		    request = window.indexedDB.open('mDesign', version);
+		    request.onerror = function (e) {
+			    log.debug('IN mc.IDB.createDb.onerror : ' + e);
+			    exit({ message: request.error.toString() });
+			    e = undefined;	// jslint
+		    };
+		    request.onsuccess = function (e) {
+			    log.debug('IN mc.IDB.createDb.onsuccess : ' + e);
+			    if (upgraded) {
+			        reopenDb();
+			    } else {
+			        setDb(request.result);
+				    exit();
+			    }
+			    e = undefined;	// jslint
+		    };
+		    request.onupgradeneeded = function (e) {
+			    log.debug('IN mc.IDB.createDb.onupgradeneeded : ' + e);
+			    upgradeNeeded(e.target.result);
+			    upgraded = true;
+		    };
 		}
-		log.debug('mc.IDB.createDb : open database');
-		request = window.indexedDB.open('mDesign', version);
-		request.onerror = function (e) {
-			log.debug('IN mc.IDB.createDb.onerror : ' + e);
-			exit({ message: request.error.toString() });
-			e = undefined;	// jslint
-		};
-		request.onsuccess = function (e) {
-			log.debug('IN mc.IDB.createDb.onsuccess : ' + e);
-			setDb(request.result);
-			if (db.setVersion && db.version !== version.toString()) {
-				log.debug('IN mc.IDB.createDb.onsuccess : new version required');
-				setVersionRequest = db.setVersion(version);
-				setVersionRequest.onerror = function (e) {
-					log.debug('IN mc.IDB.createDb.onsuccess.onerror : ' + e);
-					log.error('Error setting database version. Error ' + setVersionRequest.errorCode);
-					exit({ message: setVersionRequest.errorCode.toString() });
-					e = undefined;	// jslint
-				};
-				setVersionRequest.onsuccess = function (e) {
-					log.debug('IN mc.IDB.createDb.onsuccess.onsuccess : ' + e);
-					upgradeNeeded();
-					e = undefined;	// jslint
-				};
-			} else {
-				exit();
-			}
-			e = undefined;	// jslint
-		};
-		request.onupgradeneeded = function (e) {
-			log.debug('IN mc.IDB.createDb.onupgradeneeded : ' + e);
-			upgradeNeeded(e.target.result);
-		};
 	}
 
 	/**

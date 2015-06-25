@@ -1,5 +1,5 @@
 ﻿window.ctAppCache = (function (applicationCaches) {
-    var active, caches = applicationCaches.filter(function (cache) { return !!cache; });
+    var appCache, active, caches = applicationCaches.filter(function (cache) { return !!cache; });
     function getActiveCache() {
         if (!active) {
             for (var i = 0; i < caches.length; i++) {
@@ -10,11 +10,7 @@
         }
         return active;
     }
-    return {
-        get status() {
-            var activeCache = getActiveCache();
-            return (activeCache && activeCache.status) || 0;
-        },
+    appCache = {
         swapCache: function() {
             var activeCache = getActiveCache();
             return activeCache && activeCache.swapCache();
@@ -34,4 +30,16 @@
             });
         }
     };
-})([window.clientAppCache, window.bbApplicationCache, window.applicationCache]);
+    
+    Object.defineProperty(appCache, 'status', {
+        get: function() {
+            var activeCache = getActiveCache();
+            return (activeCache && activeCache.status) || 0;
+        },
+        enumerable: true,
+        configurable: false
+    });
+    
+    return appCache;
+    
+})([window.androidAppCache, window.bbApplicationCache, window.applicationCache]);
