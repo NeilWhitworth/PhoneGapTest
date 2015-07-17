@@ -9,8 +9,8 @@
    //Device client unrestricted
    //User is 
    //mSuiteSerialNo = 
-   //process id process0.d70a0ad6-e833-45b9-bc93-feae5ce46609(0)
-   //process name pgbs_p1
+   //process id process1.cc83bc68-6cdd-484e-9047-044848d04bc3(0)
+   //process name pgbs2
 
     (function($, mc) {
 
@@ -40,9 +40,9 @@
     deviceFormat : 'standard',
     deviceClient : 'unrestricted',
     deviceScreen : '',
-    id : 'process0.d70a0ad6-e833-45b9-bc93-feae5ce46609',
+    id : 'process1.cc83bc68-6cdd-484e-9047-044848d04bc3',
     
-    title : 'pgbs_p1',
+    title : 'pgbs2',
     version : '0',
     
         home: false,
@@ -53,9 +53,9 @@
           
     replicateSplashUrl: '',
     
-      url: '../../process0.d70a0ad6-e833-45b9-bc93-feae5ce46609/0/visualize.html',
+      url: '../../process1.cc83bc68-6cdd-484e-9047-044848d04bc3/0/visualize.html',
     
-    icon : '../../process0.d70a0ad6-e833-45b9-bc93-feae5ce46609/0/resources/defaultprocessicon.png',
+    icon : '../../process1.cc83bc68-6cdd-484e-9047-044848d04bc3/0/resources/defaultprocessicon.png',
     
     description : '',
 
@@ -79,7 +79,7 @@
   
           'Start',
         
-          'p1',
+          'pag1',
         
           'Terminator'
         ],
@@ -101,19 +101,16 @@
           },
 
   
-			//	MakePageTypeObject for p1 standard
-		// MakePageObject p1 type standard  pageprefix  questionprefix 
-          p1 : {
+			//	MakePageTypeObject for pag1 standard
+		// MakePageObject pag1 type standard  pageprefix  questionprefix 
+          pag1 : {
 					
         // process footer button templates
         footerButtonTemplateList : {
      } ,
   
 					qIdMap : {
-					lbl1 : 'lbl1',
-              t1 : 't1',
-              photo1 : 'photo1',
-              b1 : 'b1'
+					text1 : 'text1'
             }
           },
 
@@ -171,47 +168,16 @@
       
       ]
       },
-      't1': {
+      'text1': {
       qIds: [
       
-        't1'
-      ]
-      },
-      'photo1': {
-      qIds: [
-      
-        'photo1'
-      ]
-      },
-      'b1': {
-      qIds: [
-      
-        'b1'
-      ]
-      },
-      'lbl1': {
-      qIds: [
-      
-        'lbl1'
+        'text1'
       ]
       }
     },
   
         questions : {
-        photo1 : {
         
-        placeholder: '<img alt="scan" height="40px" src="../../../resources/1/images/addphoto.png"/>',
-                    
-				extraPhotoOptions: '',
-					
-        quality: 100
-				},
-			b1 : {
-        
-        placeholder: '<img alt="scan" height="40px" src="../../../resources/1/images/barcontrol.png"/>',
-        
-				},
-			
 
         //finalise the questions with something that doesnt have a ,
         $end$ : {}
@@ -246,7 +212,7 @@
 		mc.fl.action_back=    
 function($$result) {
     return this.done( mc.fl.poppage(  ) );
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 ;
 		
@@ -255,8 +221,8 @@ function($$result) {
 		// end of mc.fl.action_back
 		mc.fl.action_next=    
 function($$result) {
-    this.setvar( "$$ret", mc.fl.pagenext(  ) );
-    return this.done( this.getvar("$$ret") );
+    this.locals.$$ret = mc.fl.pagenext(  );
+    return this.done( this.locals.$$ret);
 }
 ;
 		
@@ -265,8 +231,8 @@ function($$result) {
 		// end of mc.fl.action_next
 		mc.fl.action_home=    
 function($$result) {
-    this.setvar( "$$ret", mc.fl.pagehome(  ) );
-    return this.done( this.getvar("$$ret") );
+    this.locals.$$ret = mc.fl.pagehome(  );
+    return this.done( this.locals.$$ret);
 }
 ;
 		
@@ -277,76 +243,43 @@ function($$result) {
 function($$result) {
     switch( this.state ) {
         case 1:
-            this.setvar( "$$ret", "---remove---" );
+            this.locals.$$ret = "---remove---";
             this.state=2;
             mc.fl.msgbox( this, "This is a script template for creating an arbitrary new subject and you must modify the script" );
             return this.async( );
         case 2:
-            this.setvar( "$$asf1", $$result );
-            this.setvar( "$$ret", this.getvar("$$asf1") );
-            this.setvar( "$$ret", "---remove---" );
-            this.setvar( "currentguid", mc.fl.currentsubject(  ));
-            this.setvar( "$$ret", mc.fl.setenvironment( "parentGuid", this.getvar( "currentguid" ) ) );
+            this.locals.$$asf1 = $$result;
+            this.locals.$$ret = this.locals.$$asf1;
+            this.locals.$$ret = "---remove---";
+            this.locals.currentguid=mc.fl.currentsubject(  );
+            this.locals.$$ret = mc.fl.setenvironment( "parentGuid", this.locals.currentguid );
             this.state=3;
             mc.fl.createsubject( this, "[Your process id replaces this]" );
             return this.async( );
         case 3:
-            this.setvar( "$$asf2", $$result );
-            this.setvar( "newsubjectguid", this.getvar("$$asf2"));
+            this.locals.$$asf2 = $$result;
+            this.locals.newsubjectguid=this.locals.$$asf2;
             this.state=4;
-            mc.fl.modifysubjectsyncinfo( this, this.getvar( "newsubjectguid" ), "parentGuid", this.getvar( "currentguid" ) );
+            mc.fl.modifysubjectsyncinfo( this, this.locals.newsubjectguid, "parentGuid", this.locals.currentguid );
             return this.async( );
         case 4:
-            this.setvar( "$$asf3", $$result );
-            this.setvar( "$$ret", this.getvar("$$asf3") );
-            this.setvar( "$$ret", mc.fl.pushsubject(  ) );
+            this.locals.$$asf3 = $$result;
+            this.locals.$$ret = this.locals.$$asf3;
+            this.locals.$$ret = mc.fl.pushsubject(  );
             this.state=5;
-            mc.fl.opensubject( this, this.getvar( "newsubjectguid" ) );
+            mc.fl.opensubject( this, this.locals.newsubjectguid );
             return this.async( );
         case 5:
-            this.setvar( "$$asf4", $$result );
-            this.setvar( "$$ret", this.getvar("$$asf4") );
+            this.locals.$$asf4 = $$result;
+            this.locals.$$ret = this.locals.$$asf4;
     }
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 ;
 		
 		
 
 		// end of mc.fl.action_NewSubject
-			
-				mc.fl.b1_Scan = function()
-				{
-				var engine = this;
-				try
-				{
-				b1_Scan_callback = function(result)
-				{
-					//Jools is now calling this async and although it seems to work he advises that
-					//we should tell the async execution engine that we are done
-					//to avoid any hourglasses and oother side effects continuing
-					engine.done(result);
-					if (result !== undefined)
-					{
-						if (result.constructor === Boolean)
-						{
-							if (result !== true)
-							{
-								mc.fl.refreshcurrentpage();
-								return;
-							}
-						}
-					}
-					mc.fl.pagenext();
-					
-
-				};// end of b1_Scan_callback
-        b1_Scan_callback(true);
-          
-        } catch (e) {
-        alert ('Error:' + e);
-        }
-        }; // end of b1_Scan
 	
 		// MakePageToolbarActions - Action formulas to be bound to navigation and action buttons
 		
@@ -354,12 +287,12 @@ function($$result) {
 function($$result) {
     if( true )
     {
-        this.setvar( "$$ret", mc.fl.pushpage(  ) );
-        return this.done( "p1" );
+        this.locals.$$ret = mc.fl.pushpage(  );
+        return this.done( "pag1" );
     }
 
-    this.setvar( "$$ret", mc.fl.currentpage(  ) );
-    return this.done( this.getvar("$$ret") );
+    this.locals.$$ret = mc.fl.currentpage(  );
+    return this.done( this.locals.$$ret);
 }
 ;
 			mc.fl.action_Start_pageForward=mc.fl.action_Start_transition;
@@ -379,22 +312,22 @@ function($$result) {
 	
 		// MakePageToolbarActions - Action formulas to be bound to navigation and action buttons
 		
-			mc.fl.action_p1_transition=    
+			mc.fl.action_pag1_transition=    
 function($$result) {
     return this.done( "" );
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 ;
-			mc.fl.action_p1_pageForward=mc.fl.action_p1_transition;
+			mc.fl.action_pag1_pageForward=mc.fl.action_pag1_transition;
 				
-			// end of mc.fl.action_p1_pageForward
+			// end of mc.fl.action_pag1_pageForward
 		
 
-	// Question hide formulas for page p1
-	// Page hide formula for page p1
-    mc.fl.pageHide_p1=function(callback) {
+	// Question hide formulas for page pag1
+	// Page hide formula for page pag1
+    mc.fl.pageHide_pag1=function(callback) {
 			
-		}; // end of mc.fl.pageHide_p1
+		}; // end of mc.fl.pageHide_pag1
 // Bind the page hide formula to any controls that use refreshhidden() to change the page display
 	
 		// Bind the page refresh formula to any controls that use refreshquestion() to change the page display
@@ -416,8 +349,8 @@ function($$result) {
             mc.fl.isreachable( this, 3000 );
             return this.async( );
         case 4:
-            this.setvar( "$$asf1", $$result );
-            if( this.getvar("$$asf1") )
+            this.locals.$$asf1 = $$result;
+            if( this.locals.$$asf1 )
 
             {
                 return this.done( "true" );
@@ -429,7 +362,7 @@ function($$result) {
         case 3:
             ;
     }
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -446,7 +379,7 @@ function($$result) {
 				    
 function($$result) {
     return this.done( mc.fl.getcodetype(  ) );
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -463,7 +396,7 @@ function($$result) {
 				    
 function($$result) {
     return this.done( mc.fl.getformattype(  ) );
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -480,7 +413,7 @@ function($$result) {
 				    
 function($$result) {
     return this.done( mc.fl.getplatform(  ) );
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -506,7 +439,7 @@ function($$result) {
         return this.done( "false" );
     }
 
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -532,7 +465,7 @@ function($$result) {
         return this.done( "false" );
     }
 
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -558,7 +491,7 @@ function($$result) {
         return this.done( "false" );
     }
 
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -584,7 +517,7 @@ function($$result) {
         return this.done( "false" );
     }
 
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -601,7 +534,7 @@ function($$result) {
 				    
 function($$result) {
     return this.done( mc.fl.getorientation(  ) );
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 				).execute(function(result)
@@ -622,7 +555,7 @@ function($$result) {
         return this.done( "Please change before deployment" );
     }
 
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 ,
 		iscomplete :     
@@ -632,7 +565,7 @@ function($$result) {
         return this.done( "" );
     }
 
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 ,
 		ishidden :     
@@ -642,7 +575,7 @@ function($$result) {
         return this.done( "" );
     }
 
-    return this.done( this.getvar("$$ret") );
+    return this.done( this.locals.$$ret);
 }
 
 		

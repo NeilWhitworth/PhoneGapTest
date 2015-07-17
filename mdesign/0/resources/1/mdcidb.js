@@ -1410,7 +1410,7 @@
 ** END OF MC2.IDB.JS
 */﻿(function($, mc) {
 
-	var mcversion = 'debug build';
+	var mcversion = 'jenkins-7.11.127';
 
 
 	function ready() {
