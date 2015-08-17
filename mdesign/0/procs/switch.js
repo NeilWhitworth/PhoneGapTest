@@ -1,6 +1,6 @@
 
 	var deviceType = 'Android'.toLowerCase();
-	var deviceFormat = 'standard';
+	var deviceFormat = 'tablet';
 	var cordovaVersion = parseInt('3040000', 10);
 	var resourceVersion = '1';
 	var directory, filename;

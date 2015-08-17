@@ -1,0 +1,167 @@
+<!--visualize.html file for live operation-->
+		
+		
+		
+		
+		<!--Process Name =home-->
+		<!--Process Id =process1.7d9c06cf-c3bc-4972-ba6d-0c1e34baf3dd-->
+		<!--Device Type = T=AndroidF=tabletC=unrestrictedS=-->
+		<!--User is  mSuiteSerialNo = -->
+		<!--use60Styling:-->
+		<!--useProcessLocation:-->
+		<!--useProcessLibrary:-->
+		<!--
+			StartPage = Start
+			StartPageDelay = 0
+			StartPageDelay2 = 0
+			StartPageId = Start
+      StartPageName = Start-->
+		
+<!DOCTYPE html><html>
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <title>home</title>
+    <link rel="shortcut icon" href="../0/resources/defaultprocessicon.png">
+	<!--minimized Android-->
+	<!--using default cross platform theme--><!--changed!!-->
+		<link type="text/css" rel="stylesheet" href="../../../resources/1/style/android/mdc.css">
+	<link type="text/css" rel="stylesheet" href="../../../resources/1/style/android/mdc7.css">
+	
+	<!--custom css for this application-->
+	</head>
+  <body>
+    <div class="jmuiLayout">
+      <div class="jmuiColumn">
+        <div class="jmuiPage" id="replicatePage">
+          <div class="jmuiHeader">
+            <div class="jmuiToolbar">
+              <h1>Syncing</h1>
+              <div class="jmuiCancelButton">Cancel</div>
+            </div>
+          </div>
+          <div class="jmuiNativeScroller">
+            <div>
+              <div class="replicate">
+                <h2>Syncing...</h2>
+                <div class="progressBar">
+                  <div id="replicateProgressComplete" class="progressComplete"></div>
+                </div>
+                <h2 class="statusText">status</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--The application pages-->
+    <div class="jmuiLayout jmuiCurrent">
+      <div class="jmuiColumn">
+    <!--Inline-->
+    <div class="jmuiPage jmuiPageScroller jmuiCurrent" id="Start"></div>
+    <!--Inline-->
+    <div class="jmuiPage jmuiPageScroller" id="p1">
+          <div class="jmuiHeader jmuiToolbar">
+            <h1 class="">p1</h1>
+          </div>
+          <div class="jmuiNativeScroller">
+            <div class="">
+              <div id="md_p1procs_container" class="md_processselectorInlineContainer md_inlineContainer">
+                <h2 id="md_p1procs_header" class="md_questionHeader md_processselectorInlineHeader">Select the process from the list below</h2>
+                <ul id="p1procs" dataid="procs" class="jmuiEdgetoedge processSelectorInline"></ul>
+              </div>
+              <div id="md_p1procs_1_container" class="md_processselectorInlineContainer md_inlineContainer">
+                <h2 id="md_p1procs_1_header" class="md_questionHeader md_processselectorInlineHeader">Select the process from the list below</h2>
+                <ul id="p1procs_1" dataid="procs_1" class="jmuiEdgetoedge processSelectorInline"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><script type="text/javascript">
+			//debugger;
+			window.mdesignshell = true;
+      </script>
+      <!--Device type is Android tablet unrestricted-->
+<style type="text/css"></style>
+<script type="text/javascript" src="../../../public/resources/URI.js"></script>
+	<script type="text/javascript" src="../../../public/resources/location_utils.js"></script>
+	
+	<!--consolidated mcapture logging libraries-->
+	<script type="text/javascript" src="../../../resources/1/mdclog.js"></script>
+	<script type="text/javascript" src="../../../resources/1/clientappcache.js"></script>
+	<script type="text/javascript" src="../../../resources/1/appcache.js"></script>
+	<script type="text/javascript" src="../../switch.js"></script>
+	<!--consolidated mcapture function libraries-->
+	<script type="text/javascript" src="../../../resources/1/mdc.js"></script>
+	
+	<!--library for this application-->
+	<script type="text/javascript" src="visualize.js"></script>
+	
+	<!--custom library for this application-->
+	
+	<!--Jquery files used for signatures-->
+	<script type="text/javascript" src="../../../resources/1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../resources/1/jsig-noconflict.js"></script>
+	<script type="text/javascript" src="../../../resources/1/jSignature.min.noconflict.js"></script>
+	
+			<script type="text/javascript">
+				(function($, mc) {
+					var timer;
+					var page;
+					var exit = 0;
+
+					// Gets called when page animation in or out starts
+					function onStartPageAnimationStart(e) {
+					  //debugger;
+						if (e.direction === 'out') {
+						 if (timer) {
+							clearTimeout(timer); 
+							timer = undefined;
+						 }
+						 $('#Start > div').hide() 
+						}
+						if (e.direction === 'in' ) {
+						  //dont exit the process if we didnt complete the transition out
+							if (exit > 0) {
+								mCapture.fl.pageback();
+							}
+						}
+					}
+					function onStartPageAnimationEnd(e) {
+					  //debugger;
+						//confirm we have exited the page
+						exit+=1;					
+					}
+					function ready() {
+					  //debugger;
+						page = $('#Start');
+						page.bind('jmuiPageAnimationStart', onStartPageAnimationStart);
+						page.bind('jmuiPageAnimationEnd', onStartPageAnimationEnd);
+					  if ( 'Start' === mCapture.fl.currentpage() ) {
+							if (mCapture.fl.getsyncinfo('timeout') === undefined) {
+								var delay = 0;
+								mCapture.fl.setsyncinfo(undefined,'timeout',delay);
+								if (delay !== 0) {
+									timer = setTimeout(mCapture.fl.pagenext, delay * 1000 );
+									return;
+								}
+							}
+							mCapture.fl.pagenext();
+						} else {
+						  //we didnt enter on the start page so mark this
+							//so that the start page will exit if we go back to it
+							exit+=1;
+						}
+					}
+
+					// Listen for the mcready event
+					$(document).bind('mcready', ready);
+
+				} (window.jmfw, window.mCapture));
+			</script>
+			</body>
+</html>

@@ -5,7 +5,7 @@
   //useProcessLocation:
   //useProcessLibrary:
    //Device type Android
-   //Device format standard
+   //Device format tablet
    //Device client unrestricted
    //User is 
    //mSuiteSerialNo = 
@@ -24,8 +24,8 @@
     height = 0; //dont force a window size unless we are visualizing
     if (visualize) {
     
-        width = 320;
-        height = 480;
+        width = 1024;
+        height = 768;
       
 
     }
@@ -34,10 +34,10 @@
     process = {
     
     devPlatform : 'android',
-    devFormat : 'n',
+    devFormat : 't',
     devClient : 'u',
     deviceType : 'Android',
-    deviceFormat : 'standard',
+    deviceFormat : 'tablet',
     deviceClient : 'unrestricted',
     deviceScreen : '',
     id : 'process1.cc83bc68-6cdd-484e-9047-044848d04bc3',
@@ -79,7 +79,13 @@
   
           'Start',
         
-          'pag1',
+          'changeme',
+        
+          'lookup',
+        
+          'p2',
+        
+          'p3',
         
           'Terminator'
         ],
@@ -101,16 +107,68 @@
           },
 
   
-			//	MakePageTypeObject for pag1 standard
-		// MakePageObject pag1 type standard  pageprefix  questionprefix 
-          pag1 : {
+			//	MakePageTypeObject for changeme standard
+		// MakePageObject changeme type standard  pageprefix  questionprefix 
+          changeme : {
 					
         // process footer button templates
         footerButtonTemplateList : {
      } ,
   
 					qIdMap : {
-					text1 : 'text1'
+					text1 : 'text1',
+              DropList1 : 'DropList1',
+              cb1 : 'cb1',
+              rb1 : 'rb1',
+              combo1 : 'combo1',
+              dd : 'dd'
+            }
+          },
+
+  
+			//	MakePageTypeObject for lookup lookup
+		// MakePageObject lookup type lookup  pageprefix  questionprefix 
+          lookup : {
+					
+        // process footer button templates
+        footerButtonTemplateList : {
+     } ,
+  
+					qIdMap : {
+					
+            }
+          },
+
+  
+			//	MakePageTypeObject for p2 standard
+		// MakePageObject p2 type standard  pageprefix  questionprefix 
+          p2 : {
+					
+        // process footer button templates
+        footerButtonTemplateList : {
+     } ,
+  
+					qIdMap : {
+					lbl1 : 'lbl1',
+              lbl2 : 'lbl2'
+            }
+          },
+
+  
+			//	MakePageTypeObject for p3 standard
+		// MakePageObject p3 type standard  pageprefix  questionprefix 
+          p3 : {
+					
+        // process footer button templates
+        footerButtonTemplateList : {
+     } ,
+  
+					qIdMap : {
+					date1 : 'date1',
+              date2 : 'date2',
+              ft6 : 'ft6',
+              l8 : 'l8',
+              lbl967 : 'lbl967'
             }
           },
 
@@ -172,6 +230,78 @@
       qIds: [
       
         'text1'
+      ]
+      },
+      'DropList1': {
+      qIds: [
+      
+        'DropList1'
+      ]
+      },
+      'cb1': {
+      qIds: [
+      
+        'cb1'
+      ]
+      },
+      'rb1': {
+      qIds: [
+      
+        'rb1'
+      ]
+      },
+      'combo1': {
+      qIds: [
+      
+        'combo1'
+      ]
+      },
+      'lbl1': {
+      qIds: [
+      
+        'lbl1'
+      ]
+      },
+      'date1': {
+      qIds: [
+      
+        'date1'
+      ]
+      },
+      'date2': {
+      qIds: [
+      
+        'date2'
+      ]
+      },
+      'lbl2': {
+      qIds: [
+      
+        'lbl2'
+      ]
+      },
+      'dd': {
+      qIds: [
+      
+        'dd'
+      ]
+      },
+      'ft6': {
+      qIds: [
+      
+        'ft6'
+      ]
+      },
+      'l8': {
+      qIds: [
+      
+        'l8'
+      ]
+      },
+      'lbl967': {
+      qIds: [
+      
+        'lbl967'
       ]
       }
     },
@@ -288,7 +418,7 @@ function($$result) {
     if( true )
     {
         this.locals.$$ret = mc.fl.pushpage(  );
-        return this.done( "pag1" );
+        return this.done( "p2" );
     }
 
     this.locals.$$ret = mc.fl.currentpage(  );
@@ -312,22 +442,272 @@ function($$result) {
 	
 		// MakePageToolbarActions - Action formulas to be bound to navigation and action buttons
 		
-			mc.fl.action_pag1_transition=    
+			mc.fl.action_changeme_transition=    
 function($$result) {
-    return this.done( "" );
+    switch( this.state ) {
+        case 1:
+            if( !( true ) ) { return this.go_to(2); }
+                this.locals.$$ret = mc.fl.setenvironment( "$$sourcepage", mc.fl.currentpage(  ) );
+                this.locals.$$ret = mc.fl.setenvironment( "subject", mc.fl.currentsubject(  ) );
+                this.state=3;
+                mc.fl.replicatedialog( this, "process1.cc83bc68-6cdd-484e-9047-044848d04bc3", "fb195c8e-ce18-4fe1-bd1f-a7f968f7c496", "", "", 120 );
+                return this.async( );
+        case 3:
+                this.locals.$$asf1 = $$result;
+                this.locals.result=this.locals.$$asf1;
+                this.locals.$$ret = mc.fl.setenvironment( "subject", "" );
+                if( !( mc.fl.lowercase( mc.fl.getenvironment( "loginsucceeded" ) ) === "true" ) ) { return this.go_to(4); }
+                    if( !( this.locals.result !== 0 ) ) { return this.go_to(6); }
+                        this.state=8;
+                        mc.fl.msgbox( this, "Sync Failed", "Error", 0, 48 );
+                        return this.async( );
+        case 8:
+                        this.locals.$$asf2 = $$result;
+                        this.locals.$$ret = this.locals.$$asf2;
+                        return this.done( mc.fl.currentpage(  ) );
+                    return this.go_to(7);
+        case 6:
+                        if( true )
+                        {
+                            this.locals.$$ret = mc.fl.pushpage(  );
+                            return this.done( "changeme" );
+                        }
+
+                    return this.go_to(7);
+        case 7:
+
+                return this.go_to(5);
+        case 4:
+                    this.locals.$$ret = mc.fl.setenvironment( "username", "" );
+                    this.locals.$$ret = mc.fl.setenvironment( "password", "" );
+                    this.locals.$$ret = mc.fl.setenvironment( "token", "" );
+                    this.locals.$$ret = mc.fl.setenvironment( "loginsucceeded", "false" );
+                    this.state=9;
+                    mc.fl.msgbox( this, "Login failed.", "Error", 0, 48 );
+                    return this.async( );
+        case 9:
+                    this.locals.$$asf3 = $$result;
+                    this.locals.$$ret = this.locals.$$asf3;
+                    this.locals.$$ret = mc.fl.exitapp(  );
+                    return this.done( "" );
+                return this.go_to(5);
+        case 5:
+                ;
+            return this.go_to(2);
+        case 2:
+            ;
+            if( true )
+            {
+                this.locals.$$ret = mc.fl.pushpage(  );
+                return this.done( "p3" );
+            }
+
+            this.locals.$$ret = mc.fl.currentpage(  );
+    }
     return this.done( this.locals.$$ret);
 }
 ;
-			mc.fl.action_pag1_pageForward=mc.fl.action_pag1_transition;
+			mc.fl.action_changeme_pageForward=mc.fl.action_changeme_transition;
 				
-			// end of mc.fl.action_pag1_pageForward
+			// end of mc.fl.action_changeme_pageForward
 		
 
-	// Question hide formulas for page pag1
-	// Page hide formula for page pag1
-    mc.fl.pageHide_pag1=function(callback) {
+	// Question hide formulas for page changeme
+		// Question hide formula for question cb1
+		mc.fl.questionHide_changemecb1=function(callback) {
+		
+		make_formula(
+		    
+function($$result) {
+    switch( this.state ) {
+        case 1:
+            this.state=2;
+            mc.fl.isanswered( this, "changeme", "DropList1" );
+            return this.async( );
+        case 2:
+            this.locals.$$asf1 = $$result;
+            this.state=3;
+            mc.fl.ans( this, "changeme", "DropList1" );
+            return this.async( );
+        case 3:
+            this.locals.$$asf2 = $$result;
+            this.locals.$$ret = this.locals.$$asf1 && mc.fl.contains( this.locals.$$asf2, "dl1" );
+    }
+    return this.done( this.locals.$$ret);
+}
+
+		).execute(function(result) {
+			if(result){	
+				mc.q.hide("changemecb1");
+			}	else {
+				mc.q.show("changemecb1");
+			}
+		}, function(){alert("Transform Asynchronous Function Failure: mc.fl.questionHide_changemecb1");}
+		);
+		if (callback && callback.constructor === Function) {
+			callback();
+		}
+		};
+	
+	// Page hide formula for page changeme
+    mc.fl.pageHide_changeme=function(callback) {
 			
-		}; // end of mc.fl.pageHide_pag1
+			var count;
+			function hidden() {
+				count -= 1;
+				if (count === 0 && callback && callback.constructor === Function) {
+					callback();
+				}
+			}
+			count = 1;
+			
+		// Call question hide formula for question cb1
+		mc.fl.questionHide_changemecb1(hidden);
+	
+		}; // end of mc.fl.pageHide_changeme
+// Bind the page hide formula to any controls that use refreshhidden() to change the page display
+	
+				// Change formula for question DropList1 on page changeme in section 
+								$('#changemeDropList1').bind('change',function() {
+							
+						mc.currentPage($.ui.parentPage(this).id);
+						mc.fl.refreshhidden(); 
+						});
+					
+		// Bind the page refresh formula to any controls that use refreshquestion() to change the page display
+		
+	
+		// MakePageToolbarActions - Action formulas to be bound to navigation and action buttons
+		
+			mc.fl.action_p2_transition=    
+function($$result) {
+    switch( this.state ) {
+        case 1:
+            if( !( true ) ) { return this.go_to(2); }
+                this.locals.$$ret = mc.fl.setenvironment( "$$sourcepage", mc.fl.currentpage(  ) );
+                this.locals.$$ret = mc.fl.setenvironment( "subject", mc.fl.currentsubject(  ) );
+                this.state=3;
+                mc.fl.replicatedialog( this, "process1.cc83bc68-6cdd-484e-9047-044848d04bc3", "fb195c8e-ce18-4fe1-bd1f-a7f968f7c496", "", "", 120 );
+                return this.async( );
+        case 3:
+                this.locals.$$asf1 = $$result;
+                this.locals.result=this.locals.$$asf1;
+                this.locals.$$ret = mc.fl.setenvironment( "subject", "" );
+                if( !( mc.fl.lowercase( mc.fl.getenvironment( "loginsucceeded" ) ) === "true" ) ) { return this.go_to(4); }
+                    if( !( this.locals.result !== 0 ) ) { return this.go_to(6); }
+                        this.state=8;
+                        mc.fl.msgbox( this, "Sync Failed", "Error", 0, 48 );
+                        return this.async( );
+        case 8:
+                        this.locals.$$asf2 = $$result;
+                        this.locals.$$ret = this.locals.$$asf2;
+                        return this.done( mc.fl.currentpage(  ) );
+                    return this.go_to(7);
+        case 6:
+                        if( true )
+                        {
+                            this.locals.$$ret = mc.fl.pushpage(  );
+                            return this.done( "changeme" );
+                        }
+
+                    return this.go_to(7);
+        case 7:
+
+                return this.go_to(5);
+        case 4:
+                    this.locals.$$ret = mc.fl.setenvironment( "username", "" );
+                    this.locals.$$ret = mc.fl.setenvironment( "password", "" );
+                    this.locals.$$ret = mc.fl.setenvironment( "token", "" );
+                    this.locals.$$ret = mc.fl.setenvironment( "loginsucceeded", "false" );
+                    this.state=9;
+                    mc.fl.msgbox( this, "Login failed.", "Error", 0, 48 );
+                    return this.async( );
+        case 9:
+                    this.locals.$$asf3 = $$result;
+                    this.locals.$$ret = this.locals.$$asf3;
+                    this.locals.$$ret = mc.fl.exitapp(  );
+                    return this.done( "" );
+                return this.go_to(5);
+        case 5:
+                ;
+            return this.go_to(2);
+        case 2:
+            ;
+            this.locals.$$ret = mc.fl.currentpage(  );
+    }
+    return this.done( this.locals.$$ret);
+}
+;
+			mc.fl.action_p2_pageForward=mc.fl.action_p2_transition;
+				
+			// end of mc.fl.action_p2_pageForward
+		
+
+	// Question hide formulas for page p2
+	// Page hide formula for page p2
+    mc.fl.pageHide_p2=function(callback) {
+			
+		}; // end of mc.fl.pageHide_p2
+// Bind the page hide formula to any controls that use refreshhidden() to change the page display
+	
+		// Bind the page refresh formula to any controls that use refreshquestion() to change the page display
+		
+	
+		// MakePageToolbarActions - Action formulas to be bound to navigation and action buttons
+		
+			mc.fl.action_p3_transition=    
+function($$result) {
+    switch( this.state ) {
+        case 1:
+            if( !( !(mc.fl.ishidden( "p3", "ft6" ) ) ) ) { return this.go_to(2); }
+                this.state=5;
+                mc.fl.isanswered( this, "p3", "ft6" );
+                return this.async( );
+        case 5:
+                this.locals.$$asf1 = $$result;
+                if( !( this.locals.$$asf1 ) ) { return this.go_to(3); }
+                    this.state=6;
+                    mc.fl.ans( this, "p3", "ft6" );
+                    return this.async( );
+        case 6:
+                    this.locals.$$asf2 = $$result;
+                    this.locals.p3_ft6=this.locals.$$asf2;
+                return this.go_to(4);
+        case 3:
+                    this.locals.p3_ft6="";
+                return this.go_to(4);
+        case 4:
+                ;
+                if( !( !(mc.fl.matchregex( this.locals.p3_ft6, "^.+$" ) ) ) ) { return this.go_to(7); }
+                    this.state=8;
+                    mc.fl.msgbox( this, "qid = ft6 - Input format, does not match ^.+$", "Error", 0, 48 );
+                    return this.async( );
+        case 8:
+                    this.locals.$$asf3 = $$result;
+                    this.locals.$$ret = this.locals.$$asf3;
+                    this.locals.$$ret = mc.fl.setfocus( "ft6" );
+                    return this.done( mc.fl.currentpage(  ) );
+                return this.go_to(7);
+        case 7:
+                ;
+            return this.go_to(2);
+        case 2:
+            ;
+            return this.done( "" );
+    }
+    return this.done( this.locals.$$ret);
+}
+;
+			mc.fl.action_p3_pageForward=mc.fl.action_p3_transition;
+				
+			// end of mc.fl.action_p3_pageForward
+		
+
+	// Question hide formulas for page p3
+	// Page hide formula for page p3
+    mc.fl.pageHide_p3=function(callback) {
+			
+		}; // end of mc.fl.pageHide_p3
 // Bind the page hide formula to any controls that use refreshhidden() to change the page display
 	
 		// Bind the page refresh formula to any controls that use refreshquestion() to change the page display
@@ -550,11 +930,30 @@ function($$result) {
 			
 		name :     
 function($$result) {
-    if( true )
-    {
-        return this.done( "Please change before deployment" );
-    }
+    switch( this.state ) {
+        case 1:
+            this.state=4;
+            mc.fl.isanswered( this, "changeme", "DropList1" );
+            return this.async( );
+        case 4:
+            this.locals.$$asf1 = $$result;
+            this.state=5;
+            mc.fl.ans( this, "changeme", "DropList1" );
+            return this.async( );
+        case 5:
+            this.locals.$$asf2 = $$result;
+            if( this.locals.$$asf1 && mc.fl.contains( this.locals.$$asf2, "dl1" ) )
 
+            {
+                return this.done( "bfh" );
+                return this.go_to(3);
+            }
+        case 2:
+                return this.done( "Please change before deployment" );
+            return this.go_to(3);
+        case 3:
+            ;
+    }
     return this.done( this.locals.$$ret);
 }
 ,
@@ -584,6 +983,36 @@ function($$result) {
 	
 	// Replication profile formulas and contexts
 		
+			mc.fl.repl_fb195c8e_ce18_4fe1_bd1f_a7f968f7c496 = function( ) {
+					make_formula(
+					    
+function($$result) {
+    this.locals.$$ret = mc.fl.summaryitem( mc.fl.selectedsubject(  ), "guid" ) === mc.fl.getenvironment( "subject" );
+    return this.done( this.locals.$$ret);
+}
+
+					).execute(function(result)
+					{ return result;},
+					function(){
+					alert("Transform Asynchronous function failure: mc.fl.repl_fb195c8e_ce18_4fe1_bd1f_a7f968f7c496");
+					}
+					);
+			};
+
+			
+		
+	mc.fl.replContext_fb195c8e_ce18_4fe1_bd1f_a7f968f7c496={'type':'lookup',
+		'context':{
+			'username':'$username',
+			'password':'$password',
+			'token':'$token',
+			'subject':'$subject',
+			'query':'fb195c8e-ce18-4fe1-bd1f-a7f968f7c496',
+			
+			'targetprocess':''
+			}
+			};	// end of mc.fl.replContext_$username$password$token$subjectfb195c8e-ce18-4fe1-bd1f-a7f968f7c496
+
 			
 		mc.fl.replContext_defaultRepProfile={'type':'normal',
 			'context':{
