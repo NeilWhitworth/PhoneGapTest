@@ -22,9 +22,9 @@
     deviceDirectory = 'windows8';
   }
   
-    var path = '$1/resources/' + resourceVersion + '/' + directory + '/' + deviceDirectory + '/' + filename;
+    var path = '$1/cordova.js';
     var this_url = window.locationUtils.getURI().path().replace(/\/?(.*)/, '/$1');
-    var jsfile = this_url.replace(/(.*\/mdesign\/[^/]+)\/.+/i, path);
+    var jsfile = this_url.replace(/(.*)\/mdesign\/.+/i, path);
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
     script.type = 'text/javascript';
