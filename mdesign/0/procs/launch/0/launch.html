@@ -4,11 +4,7 @@
 			Launch page apptype=ppa, resourceversion=1
 			Process list
 			process0.144db337-fce4-4fca-a686-47b1036cc5d2 = yu (0)
-			process1.82eb013f-19f2-4f85-9bec-2a90eb2d74e4 = Test (0)
-			process1.894ea421-c13e-49b8-9d6a-60753726117e = tre (0)
-			process1.9fc16716-01bd-4890-83ca-a2482b824f54 = src (0)
 			process1.cc83bc68-6cdd-484e-9047-044848d04bc3 = pgbs2 (0)
-			process1.7d9c06cf-c3bc-4972-ba6d-0c1e34baf3dd = home (0)
 			
 			State
 				normal
@@ -35,10 +31,10 @@
 		deviceFormat: 'tablet',
 		deviceScreen:  '',
 		deviceType: 'Android',
-		haveHomeProcess: true,
+		haveHomeProcess: false,
 		havePpaData: true,
-		homeProcessURL: '../../process1.7d9c06cf-c3bc-4972-ba6d-0c1e34baf3dd/0/visualize.html',
-		lastManifestGuid: '5261863d-a5a6-4a39-b0b6-520ab16dcdac',
+		homeProcessURL: '',
+		lastManifestGuid: 'c7b140d3-ccb9-424b-b7ae-61f53b6cd274',
 		launchPageMsg:  "",
 		isMisconfiguration: false,
 		isTesting: 'yes',  // yes or no
@@ -47,37 +43,17 @@
 		mSuiteGroupId: '',
 		mcId: '0',
 		ppaRelativePath: '../../../../../data/',
-		processCount: 6,
+		processCount: 2,
 		processes: [ 
 						'process0.144db337-fce4-4fca-a686-47b1036cc5d2',
 						
-						'process1.82eb013f-19f2-4f85-9bec-2a90eb2d74e4',
-						
-						'process1.894ea421-c13e-49b8-9d6a-60753726117e',
-						
-						'process1.9fc16716-01bd-4890-83ca-a2482b824f54',
-						
-						'process1.cc83bc68-6cdd-484e-9047-044848d04bc3',
-						
-						'process1.7d9c06cf-c3bc-4972-ba6d-0c1e34baf3dd'],
+						'process1.cc83bc68-6cdd-484e-9047-044848d04bc3'],
 		processJsFiles: [
 							
 										'../../process0.144db337-fce4-4fca-a686-47b1036cc5d2/0/visualize.js',
 										
 										
-										'../../process1.82eb013f-19f2-4f85-9bec-2a90eb2d74e4/0/visualize.js',
-										
-										
-										'../../process1.894ea421-c13e-49b8-9d6a-60753726117e/0/visualize.js',
-										
-										
-										'../../process1.9fc16716-01bd-4890-83ca-a2482b824f54/0/visualize.js',
-										
-										
 										'../../process1.cc83bc68-6cdd-484e-9047-044848d04bc3/0/visualize.js',
-										
-										
-										'../../process1.7d9c06cf-c3bc-4972-ba6d-0c1e34baf3dd/0/visualize.js',
 										
 										
 									''
@@ -187,13 +163,54 @@
       </div>
       <h2>Initializing application...</h2>  
 	</div>
-	<div class="jmuiPage jmuiCurrent" id="Nothing">
+	<div class="jmuiPage" id="Nothing">
       <div class="jmuiHeader jmuiToolbar">
         <h1></h1>
       </div>
       <h2></h2>
     </div>
-  </div>
+  <div class="jmuiPage jmuiCurrent" id="processesPage">
+          <div class="jmuiHeader jmuiToolbar">
+            <h1>Processes</h1>
+            <div class="jmuiCancelButton">Clear</div>
+            <div class="jmuiActionButton">Sync</div>
+          </div>
+          <div class="jmuiScroller">
+            <div>
+              <ul id="inlineProcessSelector" dataid="inlineProcessSelector" class="jmuiEdgetoedge processSelectorInline"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="jmuiPage" id="subjectsPage">
+          <div class="jmuiHeader jmuiToolbar">
+            <h1>Subjects</h1>
+            <div class="jmuiBackButton">Back</div>
+            <div class="jmuiAddButton NewSubject">+</div>
+          </div>
+          <div class="jmuiScroller">
+            <div>
+              <ul id="inlineSubjectSelector" dataid="inlineSubjectSelector" processDataId="inlineProcessSelector" class="jmuiEdgetoedge subjectSelectorInline"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="jmuiPage" id="replicatePage">
+          <div class="jmuiHeader jmuiToolbar">
+            <h1>Syncing</h1>
+            <div class="jmuiCancelButton">Cancel</div>
+          </div>
+          <div class="jmuiScroller">
+            <div>
+              <div class="replicate">
+                <h2>Syncing...</h2>
+                <div class="progressBar">
+                  <div id="replicateProgressComplete" class="progressComplete"></div>
+                </div>
+                <h2 class="statusText">status</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div><script type="text/javascript" src="../../../public/resources/URI.js"></script>
 	<script type="text/javascript" src="../../../public/resources/location_utils.js"></script>
 	
